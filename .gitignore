@@ -19,6 +19,7 @@
 .env.production.local
 /images
 /db/Schemas
+/db/mockDataEntry
 /models
 
 npm-debug.log*
