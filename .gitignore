@@ -21,6 +21,7 @@
 /db/Schemas
 /db/mockDataEntry
 /models
+/.env
 
 npm-debug.log*
 yarn-debug.log*
