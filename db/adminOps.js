@@ -139,3 +139,15 @@ exports.applicantDashboard = async (id) => {
     res.status(400).json({ "DB ERROR": error });
   }
 };
+exports.deleteJob = async (id) => {
+  try {
+    // let pool = await mssql.connect(config);
+    let poolS = await pool;
+    let query = await poolS.request().query(`DELETE FROM JobOpenings WHERE job_id = ${id}'`);
+    // console.log(query.recordset[0]);
+    return query.recordsets;
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ "DB ERROR": error });
+  }
+};

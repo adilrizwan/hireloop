@@ -17,5 +17,6 @@ router.get("/search/dashboard/:id", auth, admin.applicantDashboard);
 
 router.delete("/delete/applicants/:id", auth, admin.deleteApplicant);
 router.delete("/delete/employers/:id", auth, admin.deleteEmployer);
+router.delete("/delete/jobs/:id", auth, admin.deleteJob);
 
 module.exports = router;

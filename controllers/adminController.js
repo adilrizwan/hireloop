@@ -170,3 +170,21 @@ exports.applicantDashboard = async (req, res) => {
     res.status(401).json({ message: "Unauthorized" });
   }
 };
+exports.deleteJob = async (req, res) => {
+  if (req.user.role === "Admin") {
+    try {
+      const id = req.params.id
+      const apply = await adminOps.deleteJob(id);
+      if (typeof apply[0][0] === "undefined") {
+        res.status(204).json({ message: "User hasn't applied to any jobs" });
+      } else {
+        res.send(apply[0]);
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ message: error });
+    }
+  } else {
+    res.status(401).json({ message: "Unauthorized" });
+  }
+};
