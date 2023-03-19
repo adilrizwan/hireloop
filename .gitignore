@@ -19,6 +19,7 @@
 .env.production.local
 /images
 /db/Schemas
+/db/mockDataEntry.js
 /db/mockDataEntry
 /models
 /.env
