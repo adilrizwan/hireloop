@@ -63,7 +63,8 @@ exports.deletePost = async (postID, empID) => {
     } else if (query.recordset[0][""] === 1) {
       return 1;
     } else {
-      return "Phattgaya";
+      console.log(error);
+      res.status(400).json({ "DB ERROR": error });
     }
   } catch (error) {
     console.log(error);
@@ -102,7 +103,8 @@ exports.updateApplicationStatus = async (jobID, empID, body) => {
     } else if (query.recordset[0][""] === 2) {
       return 2;
     } else {
-      return "Phattgaya";
+      console.log(error);
+      res.status(400).json({ "DB ERROR": error });
     }
   } catch (error) {
     console.log(error);
@@ -146,7 +148,8 @@ exports.updatePost = async (id, post) => {
     } else if (query.recordset[0][""] === 1) {
       return 1;
     } else {
-      return "Phattgaya";
+      console.log(error);
+      res.status(400).json({ "DB ERROR": error });
     }
   } catch (error) {
     console.log(error);
@@ -190,7 +193,8 @@ exports.updateProfile = async (id, post) => {
     } else if (query.recordset[0][""] === 1) {
       return 1;
     } else {
-      return "Phattgaya";
+      console.log(error);
+      res.status(400).json({ "DB ERROR": error });
     }
   } catch (error) {
     console.log(error);

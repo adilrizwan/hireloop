@@ -24,7 +24,8 @@ exports.loginOps = async (email, role) => {
     } else if (query.recordset[0]) {
       return query.recordset[0];
     } else {
-      return "Phattgaya";
+      console.log(error);
+      res.status(400).json({ "DB ERROR": error });
     }
   } catch (error) {
     console.log(error);

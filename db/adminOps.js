@@ -37,7 +37,8 @@ exports.deleteUser = async (id, role) => {
     } else if (query.rowsAffected[0] === 1) {
       return "Success.";
     } else {
-      return "Phattgaya";
+      console.log(error);
+      res.status(400).json({ "DB ERROR": error });
     }
   } catch (error) {
     console.log(error);
