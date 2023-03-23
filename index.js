@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 5000;
 connectMSSQL();
 
 app.use("/login", loginRoutes)
-app.use("/register", registerRoutes)
+// app.use("/register", registerRoutes)
 app.use("/admin", adminRoutes)
 app.use("/employer", employerRoutes);
 app.use("/applicant", applicantRoutes);

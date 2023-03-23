@@ -1,7 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const employer = require("../controllers/employerController");
+const register = require("../controllers/registerController");
 const auth = require("../middleware/auth");
+
+
+router.post("/register", register.registerAuth);
+
 
 router.get("/profile", auth, employer.getProfile);
 router.put("/profile/update", auth, employer.updateProfile);

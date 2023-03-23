@@ -2,23 +2,11 @@
 // const mssql = require("mssql");
 const { pool } = require("./sqlConfig");
 
-exports.getApplicants = async () => {
+exports.search = async (role, param, key) => {
   try {
     // let pool = await mssql.connect(config);
     let poolS = await pool;
-    let query = await poolS.request().query(`SELECT * from Applicant`);
-    return query.recordset;
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ "DB ERROR": error });
-  }
-};
-exports.getEmployers = async () => {
-  try {
-    // let pool = await mssql.connect(config);
-    let poolS = await pool;
-    let query = await poolS.request().query(`SELECT * from Employer`);
-    // console.log(query.recordset)
+    let query = await poolS.request().query(`exec SearchTable '${role}','${param}','${key}'`);
     return query.recordset;
   } catch (error) {
     console.log(error);
@@ -45,84 +33,13 @@ exports.deleteUser = async (id, role) => {
     res.status(400).json({ "DB ERROR": error });
   }
 };
-exports.getApplicantbyID = async (id) => {
-  try {
-    // let pool = await mssql.connect(config);
-    let poolS = await pool;
-    let query = await poolS
-      .request()
-      .query(`SELECT * from Applicant where id = '${id}'`);
-    // console.log("Query: " +query.recordset)
-    return query.recordset[0];
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ "DB ERROR": error });
-  }
-};
-exports.getEmployerbyID = async (id) => {
-  try {
-    // let pool = await mssql.connect(config);
-    let poolS = await pool;
-    let query = await poolS
-      .request()
-      .query(`SELECT * from Employer where id = '${id}'`);
-    // console.log("Query: " +query.recordset)
-    // console.log(email)
-    return query.recordset[0];
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ "DB ERROR": error });
-  }
-};
-exports.getApplicantbyEmail = async (email) => {
-  try {
-    // let pool = await mssql.connect(config);
-    let poolS = await pool;
-    let query = await poolS
-      .request()
-      .query(`SELECT * from Applicant where email = '${email}'`);
-    // console.log("Query: " +query.recordset)
-    // console.log(email)
-    return query.recordset[0];
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ "DB ERROR": error });
-  }
-};
-exports.getEmployerbyEmail = async (email) => {
-  try {
-    // let pool = await mssql.connect(config);
-    let poolS = await pool;
-    let query = await poolS
-      .request()
-      .query(`SELECT * from Employer where email = '${email}'`);
-    // console.log("Query: " +query.recordset)
-    // console.log(email)
-    return query.recordset[0];
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ "DB ERROR": error });
-  }
-};
-exports.getAllJobs = async () => {
+exports.getApplicationLog = async (role, id) => {
   try {
     let poolS = await pool;
     let query = await poolS
       .request()
-      .query(`SELECT * from JobOpenings`);
-    return query.recordset[0];
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ "DB ERROR": error });
-  }
-};
-exports.getApplicationLog = async () => {
-  try {
-    let poolS = await pool;
-    let query = await poolS
-      .request()
-      .query(`exec getApplicationLog`);
-    return query.recordset[0];
+      .query(`exec getApplicationLog '${role}', '${id}'`);
+    return query.recordset;
   } catch (error) {
     console.log(error);
     res.status(400).json({ "DB ERROR": error });
@@ -140,13 +57,20 @@ exports.applicantDashboard = async (id) => {
     res.status(400).json({ "DB ERROR": error });
   }
 };
-exports.deleteJob = async (id) => {
+exports.deletePost = async (postID) => {
   try {
     // let pool = await mssql.connect(config);
     let poolS = await pool;
-    let query = await poolS.request().query(`DELETE FROM JobOpenings WHERE job_id = ${id}'`);
-    // console.log(query.recordset[0]);
-    return query.recordsets;
+    let query = await poolS.request()
+      .query(`exec deletePostbyAdmin '${postID}'`);
+    if (query.recordset[0][""] === 0) {
+      return 0;
+    } else if (query.recordset[0][""] === 1) {
+      return 1;
+    } else {
+      console.log(error);
+      res.status(400).json({ "DB ERROR": error });
+    }
   } catch (error) {
     console.log(error);
     res.status(400).json({ "DB ERROR": error });

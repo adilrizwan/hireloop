@@ -1,5 +1,25 @@
 const adminOps = require("../db/adminOps");
 
+exports.search = async (req, res) => {
+  try {
+    if (req.user.role === "Admin") {
+      const param = req.query;
+      const columns = Object.keys(param);
+      const values = Object.values(param);
+      if(typeof columns[1] === 'undefined'){
+        columns[1] = 'NULL'
+        values[1] = 'NULL'
+      }
+      const data = await adminOps.search(values[0], columns[1] , values[1]);
+      res.send(data);
+    } else {
+      res.status(401).json({ message: "Unauthorized" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ message: error });
+  }
+};
 exports.getApplicants = async (req, res) => {
   try {
     if (req.user.role === "Admin") {
@@ -26,11 +46,17 @@ exports.getEmployers = async (req, res) => {
     res.status(400).json({ message: error });
   }
 };
-exports.deleteApplicant = async (req, res) => {
+exports.deleteUser = async (req, res) => {
   try {
     if (req.user.role === "Admin") {
-      const appID = req.params.id;
-      const stat = await adminOps.deleteUser(appID, "Applicant");
+      const param = req.query;
+      const columns = Object.keys(param);
+      const values = Object.values(param);
+      if(typeof columns[1] === 'undefined'){
+        columns[1] = 'NULL'
+        values[1] = 'NULL'
+      }
+      const stat = await adminOps.deleteUser(values[1], values[0]);
       res.send(stat);
     } else {
       res.status(401).json({ message: "Unauthorized" });
@@ -40,20 +66,7 @@ exports.deleteApplicant = async (req, res) => {
     res.status(400).json({ message: error });
   }
 };
-exports.deleteEmployer = async (req, res) => {
-  try {
-    if (req.user.role === "Admin") {
-      const empID = req.params.id;
-      const stat = await adminOps.deleteUser(empID, "Employer");
-      res.send(stat);
-    } else {
-      res.status(401).json({ message: "Unauthorized" });
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({ message: error });
-  }
-};
+
 exports.getApplicantbyID = async (req, res) => {
   try {
     if (req.user.role === "Admin") {
@@ -142,7 +155,11 @@ exports.getAllJobs = async (req, res) => {
 exports.getApplicationLog = async (req, res) => {
   try {
     if (req.user.role === "Admin") {
-      const result = await adminOps.getApplicationLog();
+      var params = req.query.id
+      if(typeof params === 'undefined'){
+        params = -1
+      }
+      const result = await adminOps.getApplicationLog(req.user.role, params);
       res.send(result);
     } else {
       res.status(401).json({ message: "Unauthorized" });
@@ -155,7 +172,7 @@ exports.getApplicationLog = async (req, res) => {
 exports.applicantDashboard = async (req, res) => {
   if (req.user.role === "Admin") {
     try {
-      const id = req.params.id
+      const id = req.query.id
       const apply = await adminOps.applicantDashboard(id);
       if (typeof apply[0][0] === "undefined") {
         res.status(204).json({ message: "User hasn't applied to any jobs" });
@@ -171,20 +188,20 @@ exports.applicantDashboard = async (req, res) => {
   }
 };
 exports.deleteJob = async (req, res) => {
-  if (req.user.role === "Admin") {
-    try {
-      const id = req.params.id
-      const apply = await adminOps.deleteJob(id);
-      if (typeof apply[0][0] === "undefined") {
-        res.status(204).json({ message: "User hasn't applied to any jobs" });
+  try {
+    if (req.user.role === "Admin") {
+      const postID = req.query.id;
+      const stat = await adminOps.deletePost(postID);
+      if (stat === 0) {
+        res.status(204).json({ message: "Post not found" });
       } else {
-        res.send(apply[0]);
+        res.status(201).json({ message: "Success" });
       }
-    } catch (error) {
-      console.log(error);
-      res.status(400).json({ message: error });
+    } else {
+      res.status(401).json({ message: "Unauthorized" });
     }
-  } else {
-    res.status(401).json({ message: "Unauthorized" });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ message: error });
   }
 };

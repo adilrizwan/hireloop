@@ -5,7 +5,8 @@ const config = {
   user: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   server: process.env.DB_SERVER,
-  database: "JobPortal",
+  // database: "JobPortal",
+  database: "hireloop",
   options: {
     trustServerCertificate: true,
     trustedconnection: false,
