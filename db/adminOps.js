@@ -2,11 +2,11 @@
 // const mssql = require("mssql");
 const { pool } = require("./sqlConfig");
 
-exports.search = async (role, param, key) => {
+exports.search = async (role, col, key) => {
   try {
     // let pool = await mssql.connect(config);
     let poolS = await pool;
-    let query = await poolS.request().query(`exec SearchTable '${role}','${param}','${key}'`);
+    let query = await poolS.request().query(`exec SearchTable '${role}','${col}','${key}'`);
     return query.recordset;
   } catch (error) {
     console.log(error);

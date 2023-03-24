@@ -10,7 +10,7 @@ router.post("/register", register.registerAuth);
 
 router.get("/search", auth, admin.search);
 router.get("/search/jobs", auth, app.searchJobsMult);
-router.delete("/delete", auth, admin.deleteUser);
+router.delete("/delete/user", auth, admin.deleteUser);
 router.get("/search/applicationlog", auth, admin.getApplicationLog);
 router.get("/search/dashboard", auth, admin.applicantDashboard);
 router.delete("/delete/jobs", auth, admin.deleteJob);
