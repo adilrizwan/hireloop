@@ -14,7 +14,7 @@ exports.loginAuth = async (req, res) => {
         res.status(401).send("Incorrect Email or Role");
       } else {
         if (await bcrypt.compare(password, pass.password)) {
-          const jwToken = generateToken(role, pass.id);
+          const jwToken = generateToken(role.toUpperCase(), pass.id);
           res.json({
             token: jwToken,
             Details: Object.fromEntries(

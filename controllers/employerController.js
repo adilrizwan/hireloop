@@ -3,19 +3,19 @@ const openingStruct = require("../Structures/jobOpenings");
 
 exports.createOpening = async (req, res) => {
   try {
-    if (req.user.role === "Employer") {
+    if (req.user.role === "EMPLOYER") {
       const opening = req.body;
       const post = new openingStruct(
         req.user.id,
-        opening.title.toUpperCase().replace(/'/gi, "''"),
-        opening.employmentType.toUpperCase().replace(/'/gi, "''"),
+        opening.title.toUpperCase(),
+        opening.employmentType.toUpperCase(),
         opening.experience,
-        opening.qualifications.toUpperCase().replace(/'/gi, "''"),
-        opening.currency.toUpperCase().replace(/'/gi, "''"),
+        opening.qualifications.toUpperCase(),
+        opening.currency.toUpperCase(),
         opening.salary,
-        opening.location.toUpperCase().replace(/'/gi, "''"),
+        opening.location.toUpperCase(),
         opening.deadline,
-        opening.jobDesc.toUpperCase().replace(/'/gi, "''")
+        opening.jobDesc.toUpperCase()
       );
       await empOps.postOpening(post);
       res.status(201).json({ message: "Success" });
@@ -29,7 +29,7 @@ exports.createOpening = async (req, res) => {
 };
 exports.getPostings = async (req, res) => {
   try {
-    if (req.user.role === "Employer") {
+    if (req.user.role === "EMPLOYER") {
       const result = await empOps.getPosts(req.user.id);
       res.send(result);
     } else {
@@ -42,7 +42,7 @@ exports.getPostings = async (req, res) => {
 };
 exports.getJobAndApplicantDetails = async (req, res) => {
   try {
-    if (req.user.role === "Employer") {
+    if (req.user.role === "EMPLOYER") {
       const result = await empOps.getJobAndApplicantDetails(
         req.params.id,
         req.user.id
@@ -62,7 +62,7 @@ exports.getJobAndApplicantDetails = async (req, res) => {
 };
 exports.getProfile = async (req, res) => {
   try {
-    if (req.user.role === "Employer") {
+    if (req.user.role === "EMPLOYER") {
       const result = await empOps.getProfile(req.user.id);
       res.send(result);
     } else {
@@ -75,7 +75,7 @@ exports.getProfile = async (req, res) => {
 };
 exports.deletePosting = async (req, res) => {
   try {
-    if (req.user.role === "Employer") {
+    if (req.user.role === "EMPLOYER") {
       const postID = req.params.id;
 
       const stat = await empOps.deletePost(postID, req.user.id);
@@ -94,10 +94,10 @@ exports.deletePosting = async (req, res) => {
 };
 exports.patchPosting = async (req, res) => {
   try {
-    if (req.user.role === "Employer") {
+    if (req.user.role === "EMPLOYER") {
       const postID = req.params.id;
       const post = req.body;
-      const update = await empOps.updatePost(postID, post);
+      const update = await empOps.updatePost(req.user.id, postID, post);
       if (update === 1) {
         res.status(201).json({ message: "Success" });
       } else {
@@ -113,7 +113,7 @@ exports.patchPosting = async (req, res) => {
 };
 exports.updateProfile = async (req, res) => {
   try {
-    if (req.user.role === "Employer") {
+    if (req.user.role === "EMPLOYER") {
       const post = req.body;
       const update = await empOps.updateProfile(req.user.id, post);
       if (update === 1) {
@@ -131,7 +131,7 @@ exports.updateProfile = async (req, res) => {
 };
 exports.updateApplicationStatus = async (req, res) => {
   try {
-    if (req.user.role === "Employer") {
+    if (req.user.role === "EMPLOYER") {
       const jobID = req.params.id;
       const body = req.body;
       const update = await empOps.updateApplicationStatus(

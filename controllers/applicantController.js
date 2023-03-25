@@ -1,7 +1,7 @@
 const appOps = require("../db/appOps");
 const { jsPDF } = require("jspdf");
 exports.getProfile = async (req, res) => {
-  if (req.user.role === "Applicant") {
+  if (req.user.role === "APPLICANT") {
     try {
       const profile = await appOps.getProfile(req.user.id);
       const j = JSON.stringify(profile.DOB);
@@ -17,7 +17,7 @@ exports.getProfile = async (req, res) => {
   }
 };
 exports.updateProfile = async (req, res) => {
-  if (req.user.role === "Applicant") {
+  if (req.user.role === "APPLICANT") {
     try {
       const post = req.body;
       if (!post.highestEducation) {
@@ -53,7 +53,7 @@ exports.updateProfile = async (req, res) => {
   }
 };
 exports.apply = async (req, res) => {
-  if (req.user.role === "Applicant") {
+  if (req.user.role === "APPLICANT") {
     try {
       const apply = await appOps.apply(req.params.id, req.user.id);
       if (apply === 0) {
@@ -74,13 +74,13 @@ exports.apply = async (req, res) => {
   }
 };
 exports.dashboard = async (req, res) => {
-  if (req.user.role === "Applicant") {
+  if (req.user.role === "APPLICANT") {
     try {
       const apply = await appOps.dashboard(req.user.id);
-      if (typeof apply[0][0] === "undefined") {
-        res.status(204).json({ message: "You haven't applied to any jobs" });
+      if (apply.Applications.length === 0) {
+        res.json({ "Applicant Name": apply["Name"], message: "You haven't applied to any jobs" });
       } else {
-        res.send(apply[0]);
+        res.send(apply);
       }
     } catch (error) {
       console.log(error);
@@ -91,7 +91,7 @@ exports.dashboard = async (req, res) => {
   }
 };
 exports.searchJobByTitle = async (req, res) => {
-  if (req.user.role === "Applicant") {
+  if (req.user.role === "APPLICANT") {
     try {
       const title = req.query.title;
       const jobs = await appOps.searchJobByTitle(title);
@@ -105,7 +105,7 @@ exports.searchJobByTitle = async (req, res) => {
   }
 };
 exports.searchJobsMult = async (req, res) => {
-  if (req.user.role === "Applicant" || req.user.role === "Admin") {
+  if (req.user.role === "APPLICANT" || req.user.role === "ADMIN") {
     try {
       const param = req.query;
       const columns = Object.keys(param);
@@ -121,7 +121,7 @@ exports.searchJobsMult = async (req, res) => {
   }
 };
 exports.generateCV = async (req, res) => {
-  if (req.user.role === "Applicant") {
+  if (req.user.role === "APPLICANT") {
     try {
       const profile = await appOps.getProfile(req.user.id);
       const doc = new jsPDF();

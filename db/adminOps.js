@@ -1,12 +1,17 @@
 // const config = require("./sqlConfig");
-// const mssql = require("mssql");
+const sql = require("mssql");
 const { pool } = require("./sqlConfig");
 
 exports.search = async (role, col, key) => {
   try {
     // let pool = await mssql.connect(config);
     let poolS = await pool;
-    let query = await poolS.request().query(`exec SearchTable '${role}','${col}','${key}'`);
+    let query = await poolS
+    .request()
+    .input("role", sql.VarChar, role)
+    .input("col", sql.VarChar, col)
+    .input("key", sql.VarChar, key)
+    .query(`exec SearchTable @role,@col,@key`);
     return query.recordset;
   } catch (error) {
     console.log(error);
@@ -19,7 +24,9 @@ exports.deleteUser = async (id, role) => {
     let poolS = await pool;
     let query = await poolS
       .request()
-      .query(`exec deleteUser '${id}','${role}'`);
+      .input("id", sql.Int, id)
+      .input("role", sql.VarChar, role)
+      .query(`exec deleteUser @id, @role`);
     if (query.rowsAffected[0] === 0) {
       return "No such record exists.";
     } else if (query.rowsAffected[0] === 1) {
@@ -38,7 +45,9 @@ exports.getApplicationLog = async (role, id) => {
     let poolS = await pool;
     let query = await poolS
       .request()
-      .query(`exec getApplicationLog '${role}', '${id}'`);
+      .input("role", sql.VarChar, role)
+      .input("id", sql.Int, id)
+      .query(`exec getApplicationLog @role, @id`);
     return query.recordset;
   } catch (error) {
     console.log(error);
@@ -49,9 +58,12 @@ exports.applicantDashboard = async (id) => {
   try {
     // let pool = await mssql.connect(config);
     let poolS = await pool;
-    let query = await poolS.request().query(`exec appliedJobs '${id}'`);
-    // console.log(query.recordset[0]);
-    return query.recordsets;
+    let query = await poolS
+    .request()
+    .input("id", sql.Int, id)
+    .query(`exec getApplicantDashboard @id`);
+    const response = {"Applicant Name" : query.recordsets[0][0].applicantName , "Applications" : query.recordsets[1] }
+    return response;
   } catch (error) {
     console.log(error);
     res.status(400).json({ "DB ERROR": error });
@@ -61,8 +73,10 @@ exports.deletePost = async (postID) => {
   try {
     // let pool = await mssql.connect(config);
     let poolS = await pool;
-    let query = await poolS.request()
-      .query(`exec deletePostbyAdmin '${postID}'`);
+    let query = await poolS
+    .request()
+    .input("postID", sql.Int, postID)
+    .query(`exec deletePostbyAdmin @postID`);
     if (query.recordset[0][""] === 0) {
       return 0;
     } else if (query.recordset[0][""] === 1) {

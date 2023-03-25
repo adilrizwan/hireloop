@@ -13,6 +13,7 @@ exports.registerAuth = async (req, res) => {
     } else {
       if (details.role.toUpperCase() === "ADMIN") {
         if (
+          !details.role ||
           !details.firstName ||
           !details.lastName ||
           !details.email.endsWith("@hireloop.com") ||
