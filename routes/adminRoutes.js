@@ -9,10 +9,11 @@ const auth = require("../middleware/auth");
 router.post("/register", register.registerAuth);
 
 router.get("/search", auth, admin.search);
-router.get("/search/jobs", auth, app.searchJobsMult);
-router.delete("/delete/user", auth, admin.deleteUser);
-router.get("/search/applicationlog", auth, admin.getApplicationLog);
-router.get("/search/dashboard", auth, admin.applicantDashboard);
-router.delete("/delete/jobs", auth, admin.deleteJob);
+router.get("/jobs/search", auth, app.searchJobsMult);
+router.delete("/employer/:id", auth, admin.deleteEmployer);
+router.delete("/applicant/:id", auth, admin.deleteApplicant);
+router.get("/applications", auth, admin.getApplicationLog);
+router.get("/applicant/dashboard", auth, admin.applicantDashboard);
+router.delete("/jobs/:id", auth, admin.deleteJob);
 
 module.exports = router;

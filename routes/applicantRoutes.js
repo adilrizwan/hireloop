@@ -8,10 +8,10 @@ const auth = require("../middleware/auth");
 router.post("/register", register.registerAuth);
 
 router.get("/profile", auth , applicant.getProfile)
-router.put("/profile/update", auth , applicant.updateProfile)
-router.post("/apply/:id", auth , applicant.apply)      // get?? post??
-router.get("/dashboard", auth , applicant.dashboard)
-router.get("/search", auth , applicant.searchJobsMult)
 router.get("/profile/generate-cv", auth , applicant.generateCV)
+router.get("/dashboard", auth , applicant.dashboard)
+router.get("/jobs/search", auth , applicant.searchJobsMult)
+router.post("/apply/:id", auth , applicant.apply)      // get?? post??
+router.put("/profile", auth , applicant.updateProfile)
 
 module.exports = router;
