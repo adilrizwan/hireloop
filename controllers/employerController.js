@@ -1,4 +1,5 @@
 const empOps = require("../db/empOps");
+const paginate = require("../middleware/pagination")
 const openingStruct = require("../Structures/jobOpenings");
 
 exports.createOpening = async (req, res) => {
@@ -30,7 +31,8 @@ exports.createOpening = async (req, res) => {
 exports.getPostings = async (req, res) => {
   try {
     if (req.user.role === "EMPLOYER") {
-      const result = await empOps.getPosts(req.user.id);
+      const page = await paginate.paginate(req.query.page)
+      const result = await empOps.getPosts(req.user.id, page.start, page.limit);
       res.send(result);
     } else {
       res.status(401).json({ message: "Unauthorized" });
@@ -43,9 +45,12 @@ exports.getPostings = async (req, res) => {
 exports.getJobAndApplicantDetails = async (req, res) => {
   try {
     if (req.user.role === "EMPLOYER") {
+      const page = await paginate.paginate(req.query.page)
       const result = await empOps.getJobAndApplicantDetails(
         req.params.id,
-        req.user.id
+        req.user.id,
+        page.start,
+        page.limit
       );
       if (result === 0) {
         res.status(204).json({ message: "Invalid Job" });

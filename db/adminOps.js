@@ -1,18 +1,25 @@
 // const config = require("./sqlConfig");
 const sql = require("mssql");
+const paginate = require("../middleware/pagination");
 const { pool } = require("./sqlConfig");
 
-exports.search = async (role, col, key) => {
+exports.search = async (role, col, key, offset, pageSize) => {
   try {
     // let pool = await mssql.connect(config);
     let poolS = await pool;
     let query = await poolS
-    .request()
-    .input("role", sql.VarChar, role)
-    .input("col", sql.VarChar, col)
-    .input("key", sql.VarChar, key)
-    .query(`exec SearchTable @role,@col,@key`);
-    return query.recordset;
+      .request()
+      .input("role", sql.VarChar, role)
+      .input("col", sql.VarChar, col)
+      .input("key", sql.VarChar, key)
+      .input("offset", sql.Int, offset)
+      .input("pageSize", sql.Int, pageSize)
+      .query(`exec SearchBroadTable @role,@col,@key,@offset,@pageSize`);
+    const fetched = await paginate.resultCount(offset, query.recordsets[1].length, query.recordsets[0][0]["TOTAL"] )
+    return {
+      Results: "Showing " + fetched + " of " + query.recordsets[0][0]["TOTAL"] + " records",
+      Records: query.recordsets[1]
+    };
   } catch (error) {
     console.log(error);
     res.status(400).json({ "DB ERROR": error });
@@ -40,29 +47,54 @@ exports.deleteUser = async (id, role) => {
     res.status(400).json({ "DB ERROR": error });
   }
 };
-exports.getApplicationLog = async (role, id) => {
+exports.getApplicationLog = async (role, id, offset, pageSize) => {
   try {
+    // var fetched;
     let poolS = await pool;
     let query = await poolS
       .request()
       .input("role", sql.VarChar, role)
       .input("id", sql.Int, id)
-      .query(`exec getApplicationLog @role, @id`);
-    return query.recordset;
+      .input("offset", sql.Int, offset)
+      .input("pageSize", sql.Int, pageSize)
+      .query(`exec getApplicationLog @role, @id, @offset, @pageSize`);
+      const fetched = await paginate.resultCount(offset,query.recordsets[1].length,query.recordsets[0][0].TOTAL)
+      const response = {
+          Results: "Showing " + 
+           fetched +
+          " of " +
+          query.recordsets[0][0].TOTAL +
+          " results",
+        ApplicationLog: query.recordsets[1],
+      };
+      return response;
+    // return query.recordsets[0][0];
   } catch (error) {
     console.log(error);
     res.status(400).json({ "DB ERROR": error });
   }
 };
-exports.applicantDashboard = async (id) => {
+exports.applicantDashboard = async (id, offset, pageSize) => {
   try {
     // let pool = await mssql.connect(config);
     let poolS = await pool;
     let query = await poolS
-    .request()
-    .input("id", sql.Int, id)
-    .query(`exec getApplicantDashboard @id`);
-    const response = {"Applicant Name" : query.recordsets[0][0].applicantName , "Applications" : query.recordsets[1] }
+      .request()
+      .input("id", sql.Int, id)
+      .input("offset", sql.Int, offset)
+      .input("pageSize", sql.Int, pageSize)
+      .query(`exec getApplicantDashboard @id, @offset, @pageSize`);
+    const fetched = await paginate.resultCount(offset,query.recordsets[2].length,query.recordsets[1][0].TOTAL)
+    const response = {
+      "Applicant Name": query.recordsets[0][0].applicantName,
+      Results:
+        "Showing " +
+        fetched +
+        " of " +
+        query.recordsets[1][0].TOTAL +
+        " results",
+      Applications: query.recordsets[2],
+    };
     return response;
   } catch (error) {
     console.log(error);
@@ -74,9 +106,9 @@ exports.deletePost = async (postID) => {
     // let pool = await mssql.connect(config);
     let poolS = await pool;
     let query = await poolS
-    .request()
-    .input("postID", sql.Int, postID)
-    .query(`exec deletePostbyAdmin @postID`);
+      .request()
+      .input("postID", sql.Int, postID)
+      .query(`exec deletePostbyAdmin @postID`);
     if (query.recordset[0][""] === 0) {
       return 0;
     } else if (query.recordset[0][""] === 1) {

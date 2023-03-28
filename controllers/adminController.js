@@ -1,16 +1,30 @@
 const adminOps = require("../db/adminOps");
+const paginate = require("../middleware/pagination");
 
 exports.search = async (req, res) => {
   try {
     if (req.user.role === "ADMIN") {
+      const page = req.query.page 
       const param = req.query;
+      const table = param.role
+      delete param.role
+      if(typeof page!== 'undefined'){
+        delete param.page
+      }
       const columns = Object.keys(param);
       const values = Object.values(param);
-      if(typeof columns[1] === 'undefined'){
-        columns[1] = 'NULL'
-        values[1] = 'NULL'
+      if (typeof columns[0] === "undefined") {
+        columns[0] = "NULL";
+        values[0] = "NULL";
       }
-      const data = await adminOps.search(values[0], columns[1] , values[1]);
+      const pages = await paginate.paginate(page);
+      const data = await adminOps.search(
+        table,
+        columns[0],
+        values[0],
+        pages.start,
+        pages.limit
+      );
       res.send(data);
     } else {
       res.status(401).json({ message: "Unauthorized" });
@@ -24,7 +38,7 @@ exports.deleteEmployer = async (req, res) => {
   try {
     if (req.user.role === "ADMIN") {
       const id = req.params.id;
-      const stat = await adminOps.deleteUser(id, 'Employer');
+      const stat = await adminOps.deleteUser(id, "Employer");
       res.send(stat);
     } else {
       res.status(401).json({ message: "Unauthorized" });
@@ -38,7 +52,7 @@ exports.deleteApplicant = async (req, res) => {
   try {
     if (req.user.role === "ADMIN") {
       const id = req.params.id;
-      const stat = await adminOps.deleteUser(id, 'Applicant');
+      const stat = await adminOps.deleteUser(id, "Applicant");
       res.send(stat);
     } else {
       res.status(401).json({ message: "Unauthorized" });
@@ -51,11 +65,17 @@ exports.deleteApplicant = async (req, res) => {
 exports.getApplicationLog = async (req, res) => {
   try {
     if (req.user.role === "ADMIN") {
-      var params = req.query.id
-      if(typeof params === 'undefined'){
-        params = -1
+      var params = req.query.id;
+      if (typeof params === "undefined") {
+        params = -1;
       }
-      const result = await adminOps.getApplicationLog(req.user.role, params);
+      const pages = await paginate.paginate(req.query.page);
+      const result = await adminOps.getApplicationLog(
+        req.user.role,
+        params,
+        pages.start,
+        pages.limit
+      );
       res.send(result);
     } else {
       res.status(401).json({ message: "Unauthorized" });
@@ -68,10 +88,18 @@ exports.getApplicationLog = async (req, res) => {
 exports.applicantDashboard = async (req, res) => {
   if (req.user.role === "ADMIN") {
     try {
-      const id = req.query.id
-      const apply = await adminOps.applicantDashboard(id);
+      const id = req.query.id;
+      const pages = await paginate.paginate(req.query.page);
+      const apply = await adminOps.applicantDashboard(
+        id,
+        pages.start,
+        pages.limit
+      );
       if (apply.Applications.length === 0) {
-        res.json({ "Applicant Name": apply["Applicant Name"], message: "User hasn't applied to any jobs" });
+        res.json({
+          "Applicant Name": apply["Applicant Name"],
+          message: "No activity to show",
+        });
       } else {
         res.send(apply);
       }

@@ -1,4 +1,5 @@
 const appOps = require("../db/appOps");
+const paginate = require("../middleware/pagination")
 const { jsPDF } = require("jspdf");
 exports.getProfile = async (req, res) => {
   if (req.user.role === "APPLICANT") {
@@ -73,12 +74,21 @@ exports.apply = async (req, res) => {
     res.status(401).json({ message: "Unauthorized" });
   }
 };
-exports.dashboard = async (req, res) => {
+exports.applicantDashboard = async (req, res) => {
   if (req.user.role === "APPLICANT") {
     try {
-      const apply = await appOps.dashboard(req.user.id);
+      // const id = req.query.id;
+      const pages = await paginate.paginate(req.query.page);
+      const apply = await appOps.applicantDashboard(
+        req.user.id,
+        pages.start,
+        pages.limit
+      );
       if (apply.Applications.length === 0) {
-        res.json({ "Applicant Name": apply["Name"], message: "You haven't applied to any jobs" });
+        res.json({
+          "Applicant Name": apply["Applicant Name"],
+          message: "No activity to show",
+        });
       } else {
         res.send(apply);
       }
@@ -107,10 +117,15 @@ exports.searchJobByTitle = async (req, res) => {
 exports.searchJobsMult = async (req, res) => {
   if (req.user.role === "APPLICANT" || req.user.role === "ADMIN") {
     try {
+      const page = req.query.page
       const param = req.query;
+      if(typeof req.query.page !== 'undefined'){
+        delete param.page
+      }
       const columns = Object.keys(param);
       const values = Object.values(param);
-      const jobs = await appOps.searchJobsMult(columns, values);
+      const pages = await paginate.paginate(page);
+      const jobs = await appOps.searchJobsMult(columns, values, pages.start, pages.limit);
       res.send(jobs);
     } catch (error) {
       console.log(error);

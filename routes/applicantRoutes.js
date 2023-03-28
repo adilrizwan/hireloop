@@ -9,7 +9,7 @@ router.post("/register", register.registerAuth);
 
 router.get("/profile", auth , applicant.getProfile)
 router.get("/profile/generate-cv", auth , applicant.generateCV)
-router.get("/dashboard", auth , applicant.dashboard)
+router.get("/dashboard", auth , applicant.applicantDashboard)
 router.get("/jobs/search", auth , applicant.searchJobsMult)
 router.post("/apply/:id", auth , applicant.apply)      // get?? post??
 router.put("/profile", auth , applicant.updateProfile)
