@@ -8,11 +8,11 @@ const auth = require("../middleware/auth");
 router.post("/register", register.registerAuth);
 
 router.get("/profile", auth, employer.getProfile);
-router.put("/profile/update", auth, employer.updateProfile);
+router.put("/profile", auth, employer.updateProfile);
 router.post("/jobs/create", auth, employer.createOpening);
 router.get("/jobs", auth, employer.getPostings);
 router.get("/jobs/:id", auth, employer.getJobAndApplicantDetails);
-router.put("/jobs/update/:id", auth, employer.patchPosting);
+router.put("/jobs/:id", auth, employer.patchPosting);
 router.post("/jobs/shortlist/:id", auth, employer.updateApplicationStatus);
 router.delete("/jobs/:id", auth, employer.deletePosting);
 
