@@ -5,7 +5,7 @@ const register = require("../controllers/registerController");
 const auth = require("../middleware/auth");
 
 
-router.post("/register", register.registerAuth);
+// router.post("/register", register.registerAuth);
 
 router.get("/profile", auth , applicant.getProfile)
 router.get("/profile/generate-cv", auth , applicant.generateCV)

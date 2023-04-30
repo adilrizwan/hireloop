@@ -4,10 +4,9 @@ const admin = require("../controllers/adminController");
 const app = require("../controllers/applicantController");
 const register = require("../controllers/registerController");
 const auth = require("../middleware/auth");
+const login = require("../controllers/loginController");
 
-
-router.post("/register", register.registerAuth);
-
+router.post("/login", login.loginAuth);
 router.get("/search", auth, admin.search);
 router.get("/jobs/search", auth, app.searchJobsMult);
 router.delete("/employer/:id", auth, admin.deleteEmployer);

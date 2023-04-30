@@ -2,6 +2,7 @@ const express = require("express");
 require("dotenv").config();
 
 const loginRoutes = require("./routes/loginRoutes");
+const registerRoutes = require("./routes/registerRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const employerRoutes = require("./routes/employerRoutes");
 const applicantRoutes = require("./routes/applicantRoutes");
@@ -18,6 +19,7 @@ const PORT = process.env.PORT || 5000;
 connectMSSQL();
 
 app.use("/login", loginRoutes)
+app.use("/register", registerRoutes)
 app.use("/admin", adminRoutes)
 app.use("/employer", employerRoutes);
 app.use("/applicant", applicantRoutes);

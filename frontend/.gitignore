@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/backend/node_modules
+/node_modules
 /.pnp
 .pnp.js
 
@@ -17,13 +17,9 @@
 .env.development.local
 .env.test.local
 .env.production.local
-/images
-/backend/db/Schemas
-/backend/db/mockDataEntry.js
-/backend/db/mockDataEntry
-/backend/models
-/backend/.env
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-node_modules
+src/images
+src/components/Spinner.jsx

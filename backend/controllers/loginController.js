@@ -14,8 +14,14 @@ exports.loginAuth = async (req, res) => {
         res.status(401).send("Incorrect Email or Role");
       } else {
         if (await bcrypt.compare(password, pass.password)) {
-          const jwToken = generateToken(role.toUpperCase(), pass.id);
-          res.json({
+          var jwToken;
+          if(role.toUpperCase() === "EMPLOYER"){
+            jwToken = generateToken(role.toUpperCase(), pass.id, pass.companyName);
+          }
+          else{
+            jwToken = generateToken(role.toUpperCase(), pass.id, pass.firstName);
+          }
+          res.send({
             token: jwToken,
             Details: Object.fromEntries(
               Object.entries(pass).filter(([key]) => !key.includes("password"))
@@ -31,8 +37,8 @@ exports.loginAuth = async (req, res) => {
     res.status(400).json({ message: error });
   }
 };
-const generateToken = (role, id) => {
-  return jwt.sign({ role, id }, process.env.JWT_SECRET, {
-    expiresIn: "5300s",
+const generateToken = (role, id, name) => {
+  return jwt.sign({ role, id, name }, process.env.JWT_SECRET, {
+    expiresIn: "10000s",
   });
 };
