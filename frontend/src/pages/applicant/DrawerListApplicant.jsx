@@ -67,6 +67,8 @@ export default function SideBar(props) {
           <ApplicantDrawerList
             onDashboardClick={props.onDashboardClick}
             onUpdateProfileClick={props.onUpdateProfileClick}
+            onSearchClick={props.onSearchClick}
+            onCVClick={props.onCVClick}
           />
           <Divider sx={{ my: 1 }} />
         </List>
@@ -83,6 +85,12 @@ export const ApplicantDrawerList = (props) => {
   const handleDashboardClick = () => {
     props.onDashboardClick();
   };
+  const handleSearchClick = () => {
+    props.onSearchClick();
+  };
+  const handleCVClick = () => {
+    props.onCVClick();
+  };
 
   return (
     <React.Fragment>
@@ -92,13 +100,13 @@ export const ApplicantDrawerList = (props) => {
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
       </ListItemButton>
-      <ListItemButton>
+      <ListItemButton onClick={handleSearchClick}>
         <ListItemIcon>
           <SearchIcon />
         </ListItemIcon>
         <ListItemText primary="Find Job" />
       </ListItemButton>
-      <ListItemButton>
+      <ListItemButton onClick={handleCVClick}>
         <ListItemIcon>
           <DownloadIcon />
         </ListItemIcon>

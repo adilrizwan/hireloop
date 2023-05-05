@@ -7,7 +7,9 @@ import { Typography } from '@mui/material';
 import jwt_decode from "jwt-decode";
 import { theme } from '../../constants/theme'
 import { JobsApplied } from "./JobsApplied"
-import ProfileApplicant from './ProfileApplicant';
+import { ProfileApplicant } from './ProfileApplicant';
+import { FindJobs } from './FindJobs';
+import { DownloadCV } from './DownloadCV';
 import SideBar from './DrawerListApplicant';
 
 
@@ -23,6 +25,12 @@ export default function DashboardApplicant() {
   const handleDashboardClick = () => {
     setCurrentComponent(<JobsApplied />);
   };
+  const handleSearchClick = () => {
+    setCurrentComponent(<FindJobs />);
+  };
+  const handleCVClick = () => {
+    setCurrentComponent(<DownloadCV />);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -31,8 +39,9 @@ export default function DashboardApplicant() {
           <SideBar
             onDashboardClick={handleDashboardClick}
             onUpdateProfileClick={handleProfileClick}
+            onSearchClick={handleSearchClick}
+            onCVClick={handleCVClick}
           />
-          {/* <SideBar id={user}></SideBar> */}
         </Grid>
         <Box
           component="main"
