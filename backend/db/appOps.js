@@ -171,9 +171,10 @@ exports.searchJobsMult = async (columns, values, offset, pageSize) => {
         .request()
         .input("offset", sql.Int, offset)
         .input("pageSize", sql.Int, pageSize)
-        .query(
-          `SELECT * FROM JobOpenings ORDER BY job_id OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY`
-        );
+        .query(`SELECT j.*, e.companyName from JobOpenings j, Employer e ORDER BY j.job_id OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY`);
+        // .query(
+        //   `SELECT * FROM JobOpenings ORDER BY job_id OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY`
+        // );
       const fetched = await paginate.resultCount(
         offset,
         query.recordsets[0].length,
@@ -198,7 +199,7 @@ exports.searchJobsMult = async (columns, values, offset, pageSize) => {
           return values[i];
         }
       }
-      const queryString = `FROM JobOpenings WHERE ${columns
+      const queryString = `FROM JobOpenings j JOIN Employer e ON j.company_id = e.id WHERE ${columns
         .map((col) => `${col} like '%${iterate()}%'`)
         .join(" AND ")}`;
       let poolS = await pool;
@@ -209,7 +210,8 @@ exports.searchJobsMult = async (columns, values, offset, pageSize) => {
         .request()
         .input("offset", sql.Int, offset)
         .input("pageSize", sql.Int, pageSize)
-        .query(`SELECT * ` + queryString +` ORDER BY job_id OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY`
+        //.query(`SELECT * ` + queryString +` ORDER BY job_id OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY`
+        .query(`SELECT j.*, e.companyName ` + queryString +` ORDER BY j.job_id OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY`
         );
         var fetched = await paginate.resultCount(
           offset,
@@ -232,3 +234,17 @@ exports.searchJobsMult = async (columns, values, offset, pageSize) => {
     res.status(400).json({ "DB ERROR": error });
   }
 };
+
+
+// const queryString = `FROM JobOpenings j JOIN Employer e ON j.company_id = e.id WHERE ${columns
+//   .map((col) => `j.${col} like '%${iterate()}%'`)
+//   .join(" AND ")}`;
+// let poolS = await pool;
+// let query1 = await poolS
+//   .request()
+//   .query('SELECT COUNT(j.job_id) AS TOTAL ' + queryString);
+// let query = await poolS
+//   .request()
+//   .input("offset", sql.Int, offset)
+//   .input("pageSize", sql.Int, pageSize)
+//   .query(`SELECT j.*, e.companyName ` + queryString +` ORDER BY j.job_id OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY`);

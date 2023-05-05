@@ -62,9 +62,6 @@ function App() {
             <Route path="/applicant/dashboard" element={<DashboardApplicant />}>
               {" "}
             </Route>
-            {/* <Route path="/applicant/profile" element={<ApplicantProfile />}>
-              {" "}
-            </Route> */}
             <Route path="/employer/dashboard" element={<DashboardEmployer />}>
               {" "}
             </Route>

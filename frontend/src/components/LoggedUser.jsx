@@ -41,6 +41,11 @@ function LoggedUser({ setIsAuthenticated }) {
         navigate(`/${user.role.toLowerCase()}/dashboard`)
         setAnchorElUser(null);
     };
+    const handleProfile = () => {
+        navigate(`/${user.role.toLowerCase()}/dashboard`)
+        setAnchorElUser(null);
+    };
+
     const user = jwtDecode(localStorage.getItem('user'))
 
     return (
@@ -67,7 +72,7 @@ function LoggedUser({ setIsAuthenticated }) {
                         <Box>
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar  />
+                                    <Avatar />
                                     {/* <Avatar alt={user.name} src="/nonexistentimg.jpg"/>                                 */}
                                 </IconButton>
                             </Tooltip>
@@ -88,7 +93,7 @@ function LoggedUser({ setIsAuthenticated }) {
                                 onClose={handleCloseUserMenu}
                             >
                                 {settings.map((setting) => (
-                                    <MenuItem key={setting} onClick={setting === 'Logout' ? handleLogout : setting === 'Dashboard' ? handleDashboard : handleCloseUserMenu}>
+                                    <MenuItem key={setting} onClick={setting === 'Logout' ? handleLogout : setting === 'Dashboard' ? handleDashboard : setting === 'Profile' ? handleProfile : handleCloseUserMenu}>
                                         <Typography textAlign="center">{setting}</Typography>
                                     </MenuItem>
                                 ))}

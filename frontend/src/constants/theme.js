@@ -109,16 +109,40 @@ export const selectMenus = {
   minWidth: 180,
   margin: "20px 65px 0px 5px",
 };
+// export const bgImg = (image) => {
+//   return {
+//     background: {
+//       backgroundImage: `url(${image})`,
+//       backgroundRepeat: 'no-repeat',
+//       backgroundColor: theme.palette.background.main,
+//       backgroundSize: 'cover',
+//       backgroundPosition: 'center',
+//       minHeight: '100vh',
+//     }
+//   };
+// };
 export const bgImg = (image) => {
-  return {
-    background: {
-      backgroundImage: `url(${image})`,
-      backgroundRepeat: 'no-repeat',
-      backgroundColor: theme.palette.background.main,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      minHeight: '100vh',
-    }
+  let backgroundStyle = {
+    backgroundRepeat: 'no-repeat',
+    backgroundColor: theme.palette.background.main,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    minHeight: '100vh',
   };
+
+  if (image.endsWith(".svg")) {
+    backgroundStyle = {
+      ...backgroundStyle,
+      backgroundImage: `url('data:image/svg+xml,${encodeURIComponent(image)}')`
+    };
+  } else {
+    backgroundStyle = {
+      ...backgroundStyle,
+      backgroundImage: `url(${image})`
+    };
+  }
+
+  return { background: backgroundStyle };
 };
+
 

@@ -24,3 +24,4 @@ yarn-error.log*
 src/images
 src/components/Spinner.jsx
 src/components/Drawer.jsx
+src/constants/data.js
