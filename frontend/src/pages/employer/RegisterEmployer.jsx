@@ -21,6 +21,7 @@ function RegisterEmployer() {
         estdYear: "",
         email: "",
         password: "",
+        password2: "",
         noOfEmployees: "",
         prodDomain: "",
         type: "",
@@ -30,7 +31,7 @@ function RegisterEmployer() {
         country: "",
         about: "",
     })
-    const { companyName, estdYear, email, password, noOfEmployees, prodDomain, type, website, phoneNo, city, country, about } = details
+    const { companyName, estdYear, email, password, password2, noOfEmployees, prodDomain, type, website, phoneNo, city, country, about } = details
     const navigate = useNavigate()
     const handleTerms = (event) => {
         setTerms(event.target.checked);
@@ -42,10 +43,12 @@ function RegisterEmployer() {
     };
 
     const onSubmit = (event) => {
-        console.log(details)
         event.preventDefault();
         if (!terms) {
             toast.error("Please accept the terms and conditions");
+        }
+        else if (details.password !== details.password2) {
+            toast.error("Passwords do not match.")
         }
         else {
             axios.post('/register/employer', details)
@@ -87,6 +90,17 @@ function RegisterEmployer() {
                                 placeholder="eg. Hireloop"
                                 variant="standard"
                             />
+                            <TextField
+                                style={margins}
+                                name="email"
+                                required
+                                value={email}
+                                onChange={handleChange}
+                                label="Company Email"
+                                placeholder="eg. email@domain.com"
+                                helperText="(Required)"
+                                variant="standard"
+                            />
                         </Grid>
                         <Grid item>
                             <FormControl required sx={selectMenus}>
@@ -123,21 +137,22 @@ function RegisterEmployer() {
                         <Grid item>
                             <TextField
                                 style={margins}
-                                name="email"
-                                required
-                                value={email}
-                                onChange={handleChange}
-                                label="Company Email"
-                                placeholder="eg. email@domain.com"
-                                helperText="(Required)"
-                                variant="standard"
-                            />
-                            <TextField
-                                style={margins}
                                 name="password"
                                 required
                                 label="Password"
                                 value={password}
+                                onChange={handleChange}
+                                helperText="(Minimum 8 characters)"
+                                variant="standard"
+                                type="password"
+                                inputProps={{ minLength: 8 }}
+                            />
+                            <TextField
+                                style={margins}
+                                name="password2"
+                                required
+                                label="Confirm Password"
+                                value={password2}
                                 onChange={handleChange}
                                 helperText="(Minimum 8 characters)"
                                 variant="standard"

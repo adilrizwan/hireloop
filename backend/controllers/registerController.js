@@ -17,9 +17,13 @@ exports.registerAuth = async (req, res) => {
           !details.firstName ||
           !details.lastName ||
           !details.email.endsWith("@hireloop.com") ||
-          !details.password
+          !details.password ||
+          !details.password2
         ) {
           res.status(400).json({ message: "Enter all required fields." });
+        }
+        if (details.password !== details.password2) {
+          res.status(400).json({ message: "Passwords do not match." });
         } else {
           const admin = new adminStruct(
             details.role.toUpperCase(),
@@ -46,9 +50,13 @@ exports.registerAuth = async (req, res) => {
           // !details.phoneNo ||
           // !details.city ||
           !details.country ||
-          !details.password
+          !details.password ||
+          !details.password2
         ) {
           res.status(400).json({ message: "Enter all required fields." });
+        }
+        if (details.password !== details.password2) {
+          res.status(400).json({ message: "Passwords do not match." });
         } else {
           if (!details.highestEducation) {
             details.highestEducation = "NULL";
@@ -101,9 +109,13 @@ exports.registerAuth = async (req, res) => {
           // !details.phoneNo ||
           !details.city ||
           !details.country ||
-          !details.password
+          !details.password ||
+          !details.password2
         ) {
           res.status(400).json({ message: "Enter all required fields." });
+        }
+        if (details.password !== details.password2) {
+          res.status(400).json({ message: "Passwords do not match." });
         } else {
           if (!details.web) {
             details.web = "NULL";

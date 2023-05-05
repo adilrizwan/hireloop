@@ -16,9 +16,10 @@ function RegisterAdmin() {
         firstName: "",
         lastName: "",
         email: "",
-        password: ""
+        password: "",
+        password2: ""
     })
-    const { firstName, lastName, email, password } = details
+    const { firstName, lastName, email, password, password2 } = details
 
     const handleTerms = (event) => {
         setTerms(event.target.checked);
@@ -34,6 +35,9 @@ function RegisterAdmin() {
         if (!terms) {
             toast.error("Please accept the terms and conditions");
         }
+        else if (details.password !== details.password2) {
+            toast.error("Passwords do not match.")
+        }
         else {
             axios.post('/register/admin', details)
                 .then(() => {
@@ -47,11 +51,10 @@ function RegisterAdmin() {
                     if (error.response.request.status === 403) {
                         toast.warn("User already exists. Log in instead.")
                     } else {
-                        toast.error("Registration failed: " + error.response.data.message + ".")
+                        toast.error("Registration failed: " + error.response.data.message)
                         console.log(error)
                     }
                 })
-            console.log(details)
         }
     };
     return (
@@ -105,6 +108,20 @@ function RegisterAdmin() {
                                 required
                                 label="Password"
                                 value={password}
+                                onChange={handleChange}
+                                helperText="(Minimum 8 characters)"
+                                variant="standard"
+                                type="password"
+                                inputProps={{ minLength: 8 }}
+                            />
+                        </Grid>
+                        <Grid>
+                            <TextField
+                                style={margins}
+                                name="password2"
+                                required
+                                label="Confirm Password"
+                                value={password2}
                                 onChange={handleChange}
                                 helperText="(Minimum 8 characters)"
                                 variant="standard"

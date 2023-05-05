@@ -12,7 +12,6 @@ import Checkbox from '@mui/material/Checkbox'
 import { Select } from '@mui/material';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
-// import Spinner from '../../components/Spinner';
 
 function RegisterApplicant() {
     const [terms, setTerms] = useState(false)
@@ -24,6 +23,7 @@ function RegisterApplicant() {
         DOB: "",
         email: "",
         password: "",
+        password2: "",
         highestEducation: "",
         major: "",
         institution: "",
@@ -32,7 +32,7 @@ function RegisterApplicant() {
         country: "",
         bio: "",
     })
-    const { firstName, lastName, gender, DOB, email, password, highestEducation, major, institution, phoneNo, city, country, bio } = details
+    const { firstName, lastName, gender, DOB, email, password, password2, highestEducation, major, institution, phoneNo, city, country, bio } = details
 
     const handleTerms = (event) => {
         setTerms(event.target.checked);
@@ -47,6 +47,9 @@ function RegisterApplicant() {
         if (!terms) {
             toast.error("Please accept the terms and conditions");
         }
+        else if (details.password !== details.password2) {
+            toast.error("Passwords do not match.")
+        }
         else {
             axios.post('/register/applicant', details)
                 .then(() => {
@@ -60,7 +63,7 @@ function RegisterApplicant() {
                     if (error.response.request.status === 403) {
                         toast.warn("User already exists. Log in instead.")
                     } else {
-                        toast.error("Registration failed: " + error.response.data.message + ".")
+                        toast.error("Registration failed: " + error.response.data.message)
                         console.log(error.response.request.status)
                     }
                 })
@@ -138,16 +141,27 @@ function RegisterApplicant() {
                                 placeholder="eg. email@domain.com"
                                 helperText="(Required)"
                                 variant="standard"
-
-                            // inputProps={{ pattern: "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" }}
-
                             />
+                        </Grid>
+                        <Grid item>
                             <TextField
                                 style={margins}
                                 name="password"
                                 required
                                 label="Password"
                                 value={password}
+                                onChange={handleChange}
+                                helperText="(Minimum 8 characters)"
+                                variant="standard"
+                                type="password"
+                                inputProps={{ minLength: 8 }}
+                            />
+                            <TextField
+                                style={margins}
+                                name="password2"
+                                required
+                                label="Confirm Password"
+                                value={password2}
                                 onChange={handleChange}
                                 helperText="(Minimum 8 characters)"
                                 variant="standard"
