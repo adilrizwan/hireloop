@@ -123,7 +123,7 @@ function RegisterEmployer() {
                                 <Select
                                     required
                                     value={type}
-                                    label="Gender"
+                                    label="Company Type"
                                     onChange={(e) => setDetails({ ...details, type: e.target.value })}
                                 >
                                     {companyTypeArr.map((s, i) => (

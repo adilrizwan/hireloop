@@ -4,17 +4,15 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { Typography } from '@mui/material';
-import jwt_decode from "jwt-decode";
 import { theme } from '../../constants/theme'
 import { JobsPosted } from "./JobsPosted"
 import ProfileEmployer from './ProfileEmployer';
 import SideBar from './DrawerListEmployer';
-
+import CreateJob from './CreateJob';
+import Shortlist from './Shortlist';
 
 export default function DashboardEmployer() {
-  const token = localStorage.getItem('user');
-  const user = jwt_decode(token);
-  const name = user.name
+  const name = localStorage.getItem('userName');
   const [currentComponent, setCurrentComponent] = React.useState(<JobsPosted />);
 
   const handleProfileClick = () => {
@@ -22,6 +20,12 @@ export default function DashboardEmployer() {
   };
   const handleDashboardClick = () => {
     setCurrentComponent(<JobsPosted />);
+  };
+  const handleCreateJobClick = () => {
+    setCurrentComponent(<CreateJob />);
+  };
+  const handleShortlistClick = () => {
+    setCurrentComponent(<Shortlist />);
   };
 
   return (
@@ -31,6 +35,8 @@ export default function DashboardEmployer() {
           <SideBar
             onDashboardClick={handleDashboardClick}
             onUpdateProfileClick={handleProfileClick}
+            onCreateJobClick={handleCreateJobClick}
+            onShortlistClick={handleShortlistClick}
           />
         </Grid>
         <Box

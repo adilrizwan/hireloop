@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import SearchIcon from '@mui/icons-material/Search';
+// import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import SortIcon from '@mui/icons-material/Sort';
 import EditNoteIcon from '@mui/icons-material/EditNote';
@@ -65,9 +65,11 @@ export default function SideBar(props) {
         </Toolbar>
         <Divider />
         <List>
-          <ApplicantDrawerList
+          <EmployerDrawerList
             onDashboardClick={props.onDashboardClick}
             onUpdateProfileClick={props.onUpdateProfileClick}
+            onCreateJobClick={props.onCreateJobClick}
+            onShortlistClick={props.onShortlistClick}
           />
           <Divider sx={{ my: 1 }} />
         </List>
@@ -75,12 +77,18 @@ export default function SideBar(props) {
     </ThemeProvider>
   )
 }
-export const ApplicantDrawerList = (props) => {
+export const EmployerDrawerList = (props) => {
   const handleProfileClick = () => {
     props.onUpdateProfileClick();
   };
   const handleDashboardClick = () => {
     props.onDashboardClick();
+  };
+  const handleCreateJobClick = () => {
+    props.onCreateJobClick();
+  };
+  const handleShortlistClick = () => {
+    props.onShortlistClick();
   };
 
   return (
@@ -89,21 +97,21 @@ export const ApplicantDrawerList = (props) => {
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
-        <ListItemText primary="Dashboard" />
+        <ListItemText primary="My Jobs" />
       </ListItemButton>
-      <ListItemButton>
+      {/* <ListItemButton>
         <ListItemIcon>
           <SearchIcon />
         </ListItemIcon>
         <ListItemText primary="Search Job" />
-      </ListItemButton>
-      <ListItemButton>
+      </ListItemButton> */}
+      <ListItemButton onClick={handleCreateJobClick}>
         <ListItemIcon>
           <AddIcon />
         </ListItemIcon>
         <ListItemText primary="Create Job" />
       </ListItemButton>
-      <ListItemButton >
+      <ListItemButton onClick={handleShortlistClick}>
         <ListItemIcon>
           <SortIcon />
         </ListItemIcon>

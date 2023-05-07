@@ -6,13 +6,21 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { Button, ListItem, ListItemText, Pagination, Typography } from '@mui/material';
 import axios from 'axios';
+import { toast } from 'react-toastify'
 import { theme, pageSize } from '../../constants/theme'
+import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 
 export function JobsPosted() {
     const [data, setData] = React.useState([]);
     const [totalPages, setTotalPages] = React.useState(1);
     const [currentPage, setCurrentPage] = React.useState(1);
-    const token = localStorage.getItem('user');
+    const [openView, setOpenView] = React.useState(false);
+    const [dialogContent, setDialogContent] = React.useState(null);
+    const [openDelete, setOpenDelete] = React.useState(false);
+    const [deleteDialogContent, setDeleteDialogContent] = React.useState(null);
+    const [selectedJob, setSelectedJob] = React.useState(null);
+
+    const token = localStorage.getItem('token');
     React.useEffect(() => {
         axios.get('/employer/dashboard', {
             headers: {
@@ -31,6 +39,63 @@ export function JobsPosted() {
                 console.log(error)
             })
     }, [token, currentPage]);
+
+    const handleViewClick = (application) => {
+        setSelectedJob(application)
+        setOpenView(true);
+        setDialogContent(
+            <Typography>
+                <Typography>Title: {application.title}</Typography>
+                <Typography>Employment Type: {application.employmentType}</Typography>
+                <Typography>Experience (years): {application.experience}</Typography>
+                <Typography>Qualifications: {application.qualfications}</Typography>
+                <Typography>Currency: {application.currency}</Typography>
+                <Typography>Salary: {application.salary}</Typography>
+                <Typography>Location: {application.location}</Typography>
+                <Typography>Job Description: {application.jobDesc}</Typography>
+                <Typography>Date Created: {application.dateCreated.split("T")[0]}</Typography>
+                <Typography>Deadline: {application.deadline.split("T")[0]}</Typography>
+            </Typography>
+
+        )
+    };
+    const handleDeleteClick = (application) => {
+        setSelectedJob(application)
+        setOpenDelete(true);
+        setDeleteDialogContent(
+            <Typography>
+                <div>
+                    Are you sure you want to delete this opening?
+                </div>
+            </Typography>
+        )
+    };
+
+    const handleDelete = async (event) => {
+        event.preventDefault();
+        try {
+            await axios.delete(`/employer/jobs/${selectedJob.job_id}`, {
+                headers: {
+                    Authorization: `${token}`,
+                },
+            });
+            toast.success('Deleted!');
+            setOpenDelete(false);
+            setOpenView(false);
+        } catch (error) {
+            setOpenDelete(false);
+            setOpenView(false);
+            toast.error('Failed: ' + error.response.data.message + '.');
+            console.log(error.response.request.status);
+        }
+    };
+
+    const handleCloseView = () => {
+        setOpenView(false);
+    };
+    const handleCloseDelete = () => {
+        setOpenDelete(false);
+    };
 
     return (
         <ThemeProvider theme={theme}>
@@ -56,15 +121,18 @@ export function JobsPosted() {
                                     />
                                     <Box>
                                         <Button
-                                            style={{ margin: "10px" }}
+                                            style={{ margin: '10px' }}
                                             variant="contained"
-                                            size='small'
-                                            color="secondary">
+                                            size="small"
+                                            color="secondary"
+                                            onClick={() => handleViewClick(job)}
+                                        >
                                             View
                                         </Button>
                                         <Button
                                             variant="contained"
                                             size='small'
+                                            onClick={() => handleDeleteClick(job)}
                                             color="error">
                                             Delete
                                         </Button>
@@ -89,6 +157,40 @@ export function JobsPosted() {
                             },
                         }}
                     />
+                    <Dialog open={openView} onClose={handleCloseView} maxWidth="md" fullWidth>
+                        <DialogTitle align='center'>Job Details</DialogTitle>
+                        <DialogContent>{dialogContent}</DialogContent>
+                        <DialogActions>
+                            <Button
+                                variant="contained"
+                                size='small'
+                                onClick={() => handleDeleteClick(selectedJob)}
+                                color="error">
+                                Delete
+                            </Button>
+                            <Button
+                                onClick={handleCloseView}>
+                                Close
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                    <Dialog open={openDelete} onClose={handleCloseDelete} maxWidth="md" fullWidth>
+                        <DialogTitle align='center'>Delete</DialogTitle>
+                        <DialogContent>{deleteDialogContent}</DialogContent>
+                        <DialogActions>
+                            <Button
+                                variant="contained"
+                                size='small'
+                                onClick={handleDelete}
+                                color="error">
+                                Yes, I'm Sure
+                            </Button>
+                            <Button
+                                onClick={handleCloseDelete}>
+                                Cancel
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
                 </Paper>
             </Grid>
         </ThemeProvider>
