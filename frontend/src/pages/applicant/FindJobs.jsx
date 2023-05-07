@@ -2,7 +2,6 @@ import * as React from 'react';
 import { List, Box, ListItem, ListItemText, TextField, Button, Pagination, Typography } from '@mui/material';
 import { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
-// import ClearIcon from '@mui/icons-material/Clear';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ThemeProvider } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
@@ -12,6 +11,7 @@ import { toast } from 'react-toastify'
 import { buttonPlacement } from '../../constants/theme';
 import axios from 'axios'
 import { fieldNames } from '../../constants/selectMenus';
+import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 
 export function FindJobs() {
     const [data, setData] = React.useState([]);
@@ -19,7 +19,12 @@ export function FindJobs() {
     const [currentPage, setCurrentPage] = React.useState(1);
     const [inputs, setInputs] = useState([]);
     const [availableId, setavailableId] = useState([1, 3, 5, 7, 9, 11, 13, 15]);
-    const token = localStorage.getItem('user');
+    const [openView, setOpenView] = React.useState(false);
+    const [dialogContent, setDialogContent] = React.useState(null);
+    const [openApply, setOpenApply] = React.useState(false);
+    const [applyDialogContent, setApplyDialogContent] = React.useState(null);
+    const [selectedJob, setSelectedJob] = React.useState(null);
+    const token = localStorage.getItem('token');
 
     const handleInputChange = (index, event) => {
         const newInputs = [...inputs];
@@ -83,7 +88,59 @@ export function FindJobs() {
         await onSubmit(event, value);
         setCurrentPage(value);
     };
+    const handleViewClick = (application) => {
+        setSelectedJob(application)
+        // console.log(selectedJob)
+        setOpenView(true);
+        setDialogContent(
+            <Typography>
+                <Typography>Company: {application.companyName}</Typography>
+                <Typography>Title: {application.title}</Typography>
+                <Typography>Employment Type: {application.employmentType}</Typography>
+                <Typography>Experience (years): {application.experience}</Typography>
+                <Typography>Qualifications: {application.qualfications}</Typography>
+                <Typography>Currency: {application.currency}</Typography>
+                <Typography>Salary: {application.salary}</Typography>
+                <Typography>Location: {application.location}</Typography>
+                <Typography>Job Description: {application.jobDesc}</Typography>
+                <Typography>Deadline: {application.deadline.split("T")[0]}</Typography>
+            </Typography>
+        )
+    };
+    const handleApplyClick = (application) => {
+        setSelectedJob(application)
+        setOpenApply(true);
+        setApplyDialogContent(
+            <Typography>
+                Are you sure you want to apply to this opening?
+            </Typography>
+        )
+    };
 
+    const handleApply = async (event) => {
+        event.preventDefault();
+        try {
+            await axios.post(`/applicant/apply/${selectedJob.job_id}`, 5, {
+                headers: {
+                    Authorization: `${token}`,
+                },
+            });
+            toast.success('Success!');
+            setOpenApply(false);
+            setOpenView(false);
+        } catch (error) {
+            setOpenApply(false);
+            setOpenView(false);
+            toast.error('Failed: ' + error.response.data.message + '.');
+            console.log(error.response.request.status);
+        }
+    };
+    const handleCloseView = () => {
+        setOpenView(false);
+    };
+    const handleCloseApply = () => {
+        setOpenApply(false);
+    };
     return (
         <ThemeProvider theme={theme}>
             <Grid item xs={12}>
@@ -138,7 +195,6 @@ export function FindJobs() {
                                                         onClick={() => deleteField(input.id)}
                                                         sx={{ padding: 0 }}
                                                     >
-                                                        {/* <ClearIcon fontSize="small" /> */}
                                                         <DeleteIcon fontSize="small" />
                                                     </IconButton>
                                                 ),
@@ -149,8 +205,6 @@ export function FindJobs() {
                             </React.Fragment>
                         ))}
                     </Grid>
-
-
                     <Grid align='center'>
                         <Button
                             style={buttonPlacement}
@@ -173,15 +227,19 @@ export function FindJobs() {
                                     />
                                     <Box>
                                         <Button
-                                            style={{ margin: "10px" }}
+                                            style={{ margin: '10px' }}
                                             variant="contained"
-                                            size='small'
-                                            color="secondary">
+                                            size="small"
+                                            color="secondary"
+                                            onClick={() => handleViewClick(result)}
+                                        >
                                             View
                                         </Button>
                                         <Button
                                             variant="contained"
                                             size='small'
+                                            // onClick={handleApplyClick}
+                                            onClick={() => handleApplyClick(result)}
                                             color="accent">
                                             Apply
                                         </Button>
@@ -206,8 +264,43 @@ export function FindJobs() {
                             },
                         }}
                     />
+                    <Dialog open={openView} onClose={handleCloseView} maxWidth="md" fullWidth>
+                        <DialogTitle align='center'>Job Details</DialogTitle>
+                        <DialogContent>{dialogContent}</DialogContent>
+                        <DialogActions>
+                            <Button
+                                variant="contained"
+                                size='small'
+                                // onClick={handleApplyClick}
+                                onClick={() => handleApplyClick(selectedJob)}
+                                color="accent">
+                                Apply
+                            </Button>
+                            <Button
+                                onClick={handleCloseView}>
+                                Close
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                    <Dialog open={openApply} onClose={handleCloseApply} maxWidth="md" fullWidth>
+                        <DialogTitle align='center'>Apply</DialogTitle>
+                        <DialogContent>{applyDialogContent}</DialogContent>
+                        <DialogActions>
+                            <Button
+                                variant="contained"
+                                size='small'
+                                onClick={handleApply}
+                                color="accent">
+                                Yes, Im Sure
+                            </Button>
+                            <Button
+                                onClick={handleCloseApply}>
+                                Cancel
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
                 </Paper>
-            </Grid >
+            </Grid>
         </ThemeProvider >
     );
 }
