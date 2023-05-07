@@ -17,11 +17,11 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify'
 
-export default function LoginAdmin({ setIsAuthenticated }) {
+export default function LoginAdmin() {
   const [details, setDetails] = useState({
     email: "",
     password: "",
-    role: "Admin"
+    role: "ADMIN"
   })
   const { email, password } = details
   const navigate = useNavigate();
@@ -34,8 +34,9 @@ export default function LoginAdmin({ setIsAuthenticated }) {
     event.preventDefault();
     axios.post('/admin/login', details)
       .then((response) => {
-        localStorage.setItem('user', response.data.token);
-        setIsAuthenticated(true)
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('userName', response.data.Details.firstName);
+        localStorage.setItem('userRole', details.role);
         navigate("/")
       })
       .catch((error) => {

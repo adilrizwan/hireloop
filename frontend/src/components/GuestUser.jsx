@@ -9,8 +9,7 @@ import { theme } from "../constants/theme"
 import { ThemeProvider } from '@emotion/react';
 import { useNavigate } from 'react-router-dom';
 
-function GuestUser({ setIsAuthenticated }) {
-  // setIsAuthenticated(false)
+function GuestUser() {
   const navigate = useNavigate();
   const handleLogoClick = () => {
     navigate('/');

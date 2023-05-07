@@ -13,10 +13,9 @@ import Logo from "../logo.svg"
 import { settings } from "../constants/selectMenus"
 import { theme } from "../constants/theme"
 import { ThemeProvider } from '@emotion/react';
-import jwtDecode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 
-function LoggedUser({ setIsAuthenticated }) {
+function LoggedUser() {
     const navigate = useNavigate();
     const handleLogoClick = () => {
         navigate('/');
@@ -32,22 +31,22 @@ function LoggedUser({ setIsAuthenticated }) {
     };
 
     const handleLogout = () => {
-        localStorage.removeItem('user');
-        setIsAuthenticated(false);
-        navigate('/')
+        localStorage.removeItem('token');
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userRole');
+        // navigate('/')
+        window.location.assign('/')
         setAnchorElUser(null);
     };
+    const role = localStorage.getItem('userRole');
     const handleDashboard = () => {
-        navigate(`/${user.role.toLowerCase()}/dashboard`)
+        navigate(`/${role.toLowerCase()}/dashboard`)
         setAnchorElUser(null);
     };
     const handleProfile = () => {
-        navigate(`/${user.role.toLowerCase()}/dashboard`)
+        navigate(`/${role.toLowerCase()}/dashboard`)
         setAnchorElUser(null);
     };
-
-    const user = jwtDecode(localStorage.getItem('user'))
-
     return (
         <ThemeProvider theme={theme}>
             <AppBar
@@ -73,7 +72,6 @@ function LoggedUser({ setIsAuthenticated }) {
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                     <Avatar />
-                                    {/* <Avatar alt={user.name} src="/nonexistentimg.jpg"/>                                 */}
                                 </IconButton>
                             </Tooltip>
                             <Menu

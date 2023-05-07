@@ -15,18 +15,16 @@ import RadioGroup from '@mui/material/RadioGroup';
 import login from "../images/login.jpg";
 import { theme } from '../constants/theme';
 import { ThemeProvider } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
-export default function SignInSide({ setIsAuthenticated }) {
+export default function SignInSide() {
   const [details, setDetails] = useState({
     email: "",
     password: "",
     role: ""
   })
   const { email, password, role } = details
-  const navigate = useNavigate();
   const handleChange = (event) => {
     const { name, value } = event.target;
     if (name === "role") {
@@ -39,9 +37,12 @@ export default function SignInSide({ setIsAuthenticated }) {
     event.preventDefault();
     axios.post('login', details)
       .then((response) => {
-        localStorage.setItem('user', response.data.token);
-        setIsAuthenticated(true);
-        navigate(`/${role.toLowerCase()}/dashboard`)
+        localStorage.setItem('token', response.data.token);
+        details.role.toUpperCase() === 'APPLICANT' ? localStorage.setItem('userName', response.data.Details.firstName) 
+        : localStorage.setItem('userName', response.data.Details.companyName);
+        localStorage.setItem('userRole', details.role.toUpperCase())
+        window.location.assign(`/${role.toLowerCase()}/dashboard`)
+
       })
       .catch((error) => {
         if (error.response.request.status === 401) {
@@ -149,7 +150,7 @@ export default function SignInSide({ setIsAuthenticated }) {
                     sx={{ textDecoration: 'underline', cursor: 'pointer' }}
                     variant='subtitle2'
                     onClick={() => {
-                      navigate('/register')
+                      window.location.assign('/register')
                     }}
                   >
                     Don't have an account? Sign Up
