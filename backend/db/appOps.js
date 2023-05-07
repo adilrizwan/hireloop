@@ -171,7 +171,8 @@ exports.searchJobsMult = async (columns, values, offset, pageSize) => {
         .request()
         .input("offset", sql.Int, offset)
         .input("pageSize", sql.Int, pageSize)
-        .query(`SELECT j.*, e.companyName from JobOpenings j, Employer e ORDER BY j.job_id OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY`);
+        .query(`SELECT j.*, e.companyName FROM JobOpenings j JOIN Employer e ON j.company_id = e.id ORDER BY j.job_id OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY`);
+        // .query(`SELECT j.*, e.companyName from JobOpenings j, Employer e ORDER BY j.job_id OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY`);
         // .query(
         //   `SELECT * FROM JobOpenings ORDER BY job_id OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY`
         // );
@@ -199,6 +200,7 @@ exports.searchJobsMult = async (columns, values, offset, pageSize) => {
           return values[i];
         }
       }
+      // const queryString = `FROM JobOpenings j WHERE ${columns
       const queryString = `FROM JobOpenings j JOIN Employer e ON j.company_id = e.id WHERE ${columns
         .map((col) => `${col} like '%${iterate()}%'`)
         .join(" AND ")}`;
@@ -210,7 +212,7 @@ exports.searchJobsMult = async (columns, values, offset, pageSize) => {
         .request()
         .input("offset", sql.Int, offset)
         .input("pageSize", sql.Int, pageSize)
-        //.query(`SELECT * ` + queryString +` ORDER BY job_id OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY`
+        // .query(`SELECT * ` + queryString +` ORDER BY j.job_id OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY`
         .query(`SELECT j.*, e.companyName ` + queryString +` ORDER BY j.job_id OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY`
         );
         var fetched = await paginate.resultCount(
@@ -227,6 +229,7 @@ exports.searchJobsMult = async (columns, values, offset, pageSize) => {
             " results",
           SearchResults: query.recordsets[0],
         };
+        console.log(queryString)
       }
       return result;
   } catch (error) {

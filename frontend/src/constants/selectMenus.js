@@ -1,6 +1,6 @@
 export const genderArr = ["MALE", "FEMALE", "OTHER"];
-export const settings = ['Dashboard', 'Profile', 'Logout'];
-export const companyTypeArr = ["Pvt Ltd.", "LLC", "Inc", "Other"];
+export const settings = ['Dashboard', 'Logout'];
+export const companyTypeArr = ["PVT LTD", "LLC", "INC", "OTHER"];
 export const years = Array.from(
   { length: new Date().getFullYear() - 999 },
   (_, i) => new Date().getFullYear() - i

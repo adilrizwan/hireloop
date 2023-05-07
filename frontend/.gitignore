@@ -25,3 +25,6 @@ src/images
 src/components/Spinner.jsx
 src/components/Drawer.jsx
 src/constants/data.js
+src/components/Dashboard.jsx
+src/components/Drawer.jsx
+src/components/EmployerDrawer.jsx
