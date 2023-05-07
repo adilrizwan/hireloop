@@ -10,7 +10,7 @@ import { toast } from 'react-toastify'
 import axios from 'axios';
 
 export function DownloadCV() {
-    const token = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
 
     const onSubmit = async (event) => {
         event.preventDefault();

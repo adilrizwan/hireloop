@@ -90,6 +90,7 @@ function DashboardContent() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 0, mb: 4 }}>
+            <Typography>Home Dashboard</Typography>
             <Typography variant="h4">
               Welcome, {name}
             </Typography>

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import axios from 'axios';
-import { Grid, Paper, Button, Input, ThemeProvider, Typography, TextField, MenuItem, InputLabel, Box, FormControl, Avatar } from '@mui/material'
+import { Grid, Paper, Button, Input, ThemeProvider, Typography, TextField, MenuItem, InputLabel, Box, FormControl } from '@mui/material'
 import { useState } from "react";
 import { theme, paperStyle, margins, buttonPlacement, selectMenus } from '../../constants/theme'
 import { countries } from "../../constants/countries"
@@ -11,7 +11,7 @@ import { toast } from 'react-toastify'
 import { useEffect } from 'react';
 
 export function ProfileApplicant() {
-    const token = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
     const [data, setData] = useState({
         firstName: '',
         lastName: '',
@@ -68,10 +68,11 @@ export function ProfileApplicant() {
                 <Paper sx={{ mt: 3, mb: 3 }}>
                     <Paper elevation={0} style={paperStyle}>
                         <Grid align="center">
-                            <Avatar style={{ backgroundColor: theme.palette.primary.main }} />
-                            <Typography variant="h2">Update Profile</Typography>
+                            <Typography variant="h6" fontSize={18} align='center'>
+                                Update Profile
+                            </Typography>
                         </Grid>
-                        <form controlled onChange={handleChange} onSubmit={onSubmit}>
+                        <form onChange={handleChange} onSubmit={onSubmit}>
                             <Grid item>
                                 <TextField
                                     style={margins}
@@ -150,7 +151,6 @@ export function ProfileApplicant() {
                                     <Input
                                         name="phoneNo"
                                         value={data.phoneNo}
-                                        onChange={handleChange}
                                         placeholder="Phone Number"
                                         inputComponent={TextMaskCustom}
                                     />
@@ -216,17 +216,17 @@ export function ProfileApplicant() {
                                     rows={5}
                                 />
                             </Grid>
-                            <Grid align="center">
-                                <Button
-                                    style={buttonPlacement}
-                                    variant="contained"
-                                    size='large'
-                                    onClick={onSubmit}
-                                    color="primary">
-                                    Update
-                                </Button>
-                            </Grid>
                         </form>
+                        <Grid align="center">
+                            <Button
+                                style={buttonPlacement}
+                                variant="contained"
+                                size='large'
+                                onClick={onSubmit}
+                                color="primary">
+                                Update
+                            </Button>
+                        </Grid>
                     </Paper>
                 </Paper>
             </Grid>

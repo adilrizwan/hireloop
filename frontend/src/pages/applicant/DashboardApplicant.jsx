@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import { Typography } from '@mui/material';
-import jwt_decode from "jwt-decode";
 import { theme } from '../../constants/theme'
 import { JobsApplied } from "./JobsApplied"
 import { ProfileApplicant } from './ProfileApplicant';
@@ -14,9 +13,7 @@ import SideBar from './DrawerListApplicant';
 
 
 export default function DashboardApplicant() {
-  const token = localStorage.getItem('user');
-  const user = jwt_decode(token);
-  const name = user.name
+  const name = localStorage.getItem('userName');
   const [currentComponent, setCurrentComponent] = React.useState(<JobsApplied />);
 
   const handleProfileClick = () => {

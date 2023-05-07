@@ -105,7 +105,6 @@ export default function Footer() {
             </List>
           </Grid>
           <Grid item md={6} lg={4}>
-            {/* <Typography variant="body2">Admin</Typography> */}
             <Stack>
               <Button
                 onClick={() => {

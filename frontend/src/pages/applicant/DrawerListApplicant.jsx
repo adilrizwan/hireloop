@@ -98,13 +98,13 @@ export const ApplicantDrawerList = (props) => {
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
-        <ListItemText primary="Dashboard" />
+        <ListItemText primary="My Jobs" />
       </ListItemButton>
       <ListItemButton onClick={handleSearchClick}>
         <ListItemIcon>
           <SearchIcon />
         </ListItemIcon>
-        <ListItemText primary="Find Job" />
+        <ListItemText primary="Find Jobs" />
       </ListItemButton>
       <ListItemButton onClick={handleCVClick}>
         <ListItemIcon>
