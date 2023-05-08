@@ -18,7 +18,7 @@ export default function Shortlist() {
   const [openView, setOpenView] = React.useState(false);
   const [selectedApplicant, setSelectedApplicant] = React.useState(null);
   const [dialogContent, setDialogContent] = React.useState(null);
-
+  const [activeJob, setActiveJob] = React.useState(null);
   const token = localStorage.getItem('token');
 
   React.useEffect(() => {
@@ -53,6 +53,7 @@ export default function Shortlist() {
       .catch((error) => {
         console.log(error);
       });
+      setActiveJob(job.job_id)
   };
   const handleViewClick = (application) => {
     setOpenView(true);
@@ -74,7 +75,6 @@ export default function Shortlist() {
         <Typography>Bio: {application.bio}</Typography>
         <Typography>Status: {application.status}</Typography>
       </Typography>
-
     )
   };
   const handleStatusClick = (message) => {
@@ -88,12 +88,10 @@ export default function Shortlist() {
       }
     })
       .then((response) => {
-        // Handle success response if needed
         toast.success("Success!")
         setOpenView(false)
       })
       .catch((error) => {
-        // Handle error if needed
         toast.error('Failed: ' + error.response.data.message + '.');
         console.log(error.response.request.status);
       });
@@ -139,7 +137,8 @@ export default function Shortlist() {
                             variant="contained"
                             size='small'
                             onClick={() => handleDetailsClick(job)}
-                            color="primary">
+                            color={activeJob === job.job_id ? "secondary" : "primary"}
+                            >
                             Details
                           </Button>
                         </Box>
