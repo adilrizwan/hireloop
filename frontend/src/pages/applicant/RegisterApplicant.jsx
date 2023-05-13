@@ -39,14 +39,17 @@ export default function RegisterApplicant() {
     };
     const navigate = useNavigate()
     const onSubmit = (event) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         event.preventDefault();
         if (!terms) {
             toast.error("Please accept the terms and conditions");
-        }
-        else if (details.password !== details.password2) {
-            toast.error("Passwords do not match.")
-        }
-        else {
+        } else if (password.length < 8) {
+            toast.error("Password should be at least 8 characters long.");
+        } else if (password !== password2) {
+            toast.error("Passwords do not match.");
+        } else if (!emailRegex.test(email)) {
+            toast.error("Invalid email format");
+        } else {
             axios.post('/register/applicant', details)
                 .then(() => {
                     toast.success("Registration Successful. Redirecting to login page.");
