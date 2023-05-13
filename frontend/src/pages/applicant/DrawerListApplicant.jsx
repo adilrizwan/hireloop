@@ -1,17 +1,12 @@
 import * as React from 'react';
-import { List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { List, ListItemButton, ListItemIcon, ListItemText, Divider, IconButton, Toolbar, styled, ThemeProvider, useMediaQuery } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import SearchIcon from '@mui/icons-material/Search';
 import DownloadIcon from '@mui/icons-material/Download';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import MuiDrawer from '@mui/material/Drawer';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import { styled, ThemeProvider } from '@mui/material/styles';
-import Toolbar from '@mui/material/Toolbar';
 import { theme } from "../../constants/theme"
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import { useMediaQuery } from '@mui/material';
 
 const drawerWidth = 240;
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -76,7 +71,6 @@ export default function SideBar(props) {
     </ThemeProvider>
   )
 }
-
 
 export const ApplicantDrawerList = (props) => {
   const handleProfileClick = () => {

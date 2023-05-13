@@ -1,18 +1,16 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import axios from 'axios';
-import { Grid, Paper, Button, Input, ThemeProvider, Typography, TextField, MenuItem, InputLabel, Box, FormControl } from '@mui/material'
-import { useState } from "react";
+import { Grid, Select, Paper, Button, Input, ThemeProvider, Typography, TextField, MenuItem, InputLabel, Box, FormControl } from '@mui/material'
 import { theme, paperStyle, margins, buttonPlacement, selectMenus } from '../../constants/theme'
 import { countries } from "../../constants/countries"
 import { TextMaskCustom } from "../../constants/phoneNumber"
 import { genderArr } from "../../constants/selectMenus"
-import { Select } from '@mui/material';
 import { toast } from 'react-toastify'
-import { useEffect } from 'react';
 
 export function ProfileApplicant() {
     const token = localStorage.getItem('token');
-    const [data, setData] = useState({
+    const [data, setData] = React.useState({
         firstName: '',
         lastName: '',
         gender: '',
@@ -58,7 +56,7 @@ export function ProfileApplicant() {
             toast.warn('Some changes might take effect after you login next time.');
         } catch (error) {
             toast.error('Update failed: ' + error.response.data.message + '.');
-            console.log(error.response.request.status);
+            console.log(error);
         }
     };
 
@@ -233,4 +231,3 @@ export function ProfileApplicant() {
         </ThemeProvider >
     );
 }
-

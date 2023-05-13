@@ -1,9 +1,5 @@
 import React from 'react';
-import { ThemeProvider } from '@mui/material/styles';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
+import { ThemeProvider, Grid, Paper, Typography, Button } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 import { theme } from '../../constants/theme';
 import { toast } from 'react-toastify'
@@ -11,7 +7,6 @@ import axios from 'axios';
 
 export function DownloadCV() {
     const token = localStorage.getItem('token');
-
     const onSubmit = async (event) => {
         event.preventDefault();
         try {
@@ -22,11 +17,9 @@ export function DownloadCV() {
             });
         } catch (error) {
             toast.error('Download failed: ' + error.response.data.message + '.');
-            console.log(error.response.request.status);
+            console.log(error);
         }
-
     }
-
     return (
         <ThemeProvider theme={theme}>
             <Grid item xs={12}>

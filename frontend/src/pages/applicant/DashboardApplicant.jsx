@@ -1,9 +1,5 @@
 import * as React from 'react';
-import { ThemeProvider } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import { Typography } from '@mui/material';
+import { Typography, Box, ThemeProvider, Container, Grid } from '@mui/material';
 import { theme } from '../../constants/theme'
 import { JobsApplied } from "./JobsApplied"
 import { ProfileApplicant } from './ProfileApplicant';

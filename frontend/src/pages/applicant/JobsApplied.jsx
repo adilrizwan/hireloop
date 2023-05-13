@@ -1,13 +1,7 @@
 import * as React from 'react';
-import { ThemeProvider } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import { Button, ListItem, ListItemText, Pagination, Typography } from '@mui/material';
+import { ThemeProvider, Box, Grid, List, Paper, Button, ListItem, ListItemText, Pagination, Typography, Dialog, DialogTitle, DialogContent, DialogActions} from '@mui/material';
 import axios from 'axios';
 import { theme, pageSize } from '../../constants/theme'
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 
 export function JobsApplied() {
     const [data, setData] = React.useState([]);
@@ -39,8 +33,7 @@ export function JobsApplied() {
     const handleViewClick = (application) => {
         setOpenView(true);
         setDialogContent(
-
-            <Typography>
+            <>
                 <Typography>Company: {application.companyName}</Typography>
                 <Typography>Title: {application.title}</Typography>
                 <Typography>Employment Type: {application.employmentType}</Typography>
@@ -51,8 +44,7 @@ export function JobsApplied() {
                 <Typography>Location: {application.location}</Typography>
                 <Typography>Job Description: {application.jobDesc}</Typography>
                 <Typography>Status: {application.status}</Typography>
-            </Typography>
-
+            </>
         )
     };
 
@@ -91,7 +83,7 @@ export function JobsApplied() {
                                                     : application.status === 'ACCEPTED'
                                                         ? theme.palette.primary.main
                                                         : application.status === 'CONTACTED'
-                                                            ? theme.palette.accent.main // Set the desired color for 'contected'
+                                                            ? theme.palette.accent.main
                                                             : theme.palette.tertiary.black,
                                             mr: '15px'
                                         }}>{application.status}</Typography>

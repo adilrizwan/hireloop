@@ -1,21 +1,17 @@
-import { Grid, Avatar, Paper, Button, Input, ThemeProvider, Typography, TextField, MenuItem, InputLabel, Box, FormControl } from '@mui/material'
+import { Grid, Select, Checkbox, FormControlLabel, Avatar, Paper, Button, Input, ThemeProvider, Typography, TextField, MenuItem, InputLabel, Box, FormControl } from '@mui/material'
 import React from 'react'
-import { useState } from "react";
 import { toast } from 'react-toastify'
 import { theme, bgImg, paperStyle, margins, buttonPlacement, selectMenus } from '../../constants/theme'
 import { countries } from "../../constants/countries"
 import { TextMaskCustom } from "../../constants/phoneNumber"
 import { genderArr } from "../../constants/selectMenus"
 import station from "../../images/station.jpg"
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox'
-import { Select } from '@mui/material';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 
-function RegisterApplicant() {
-    const [terms, setTerms] = useState(false)
-    const [details, setDetails] = useState({
+export default function RegisterApplicant() {
+    const [terms, setTerms] = React.useState(false)
+    const [details, setDetails] = React.useState({
         role: "Applicant",
         firstName: "",
         lastName: "",
@@ -64,7 +60,7 @@ function RegisterApplicant() {
                         toast.warn("User already exists. Log in instead.")
                     } else {
                         toast.error("Registration failed: " + error.response.data.message)
-                        console.log(error.response.request.status)
+                        console.log(error)
                     }
                 })
         }
@@ -303,5 +299,3 @@ function RegisterApplicant() {
         </ThemeProvider>
     )
 }
-export default RegisterApplicant
-

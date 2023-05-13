@@ -1,24 +1,17 @@
 import * as React from 'react';
-import { List, Box, ListItem, ListItemText, TextField, Button, Pagination, Typography } from '@mui/material';
-import { useState } from 'react';
-import IconButton from '@mui/material/IconButton';
+import { List, IconButton, Box, ListItem, ListItemText, TextField, Button, Pagination, Typography, ThemeProvider, Grid, Paper, Dialog, DialogTitle, DialogContent, DialogActions} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { ThemeProvider } from '@mui/material/styles';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import { theme, pageSize } from '../../constants/theme'
+import { theme, pageSize, buttonPlacement } from '../../constants/theme'
 import { toast } from 'react-toastify'
-import { buttonPlacement } from '../../constants/theme';
 import axios from 'axios'
 import { fieldNames } from '../../constants/selectMenus';
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 
 export function FindJobs() {
     const [data, setData] = React.useState([]);
     const [totalPages, setTotalPages] = React.useState(1);
     const [currentPage, setCurrentPage] = React.useState(1);
-    const [inputs, setInputs] = useState([]);
-    const [availableId, setavailableId] = useState([1, 3, 5, 7, 9, 11, 13, 15]);
+    const [inputs, setInputs] = React.useState([]);
+    const [availableId, setavailableId] = React.useState([1, 3, 5, 7, 9, 11, 13, 15]);
     const [openView, setOpenView] = React.useState(false);
     const [dialogContent, setDialogContent] = React.useState(null);
     const [openApply, setOpenApply] = React.useState(false);
@@ -34,29 +27,23 @@ export function FindJobs() {
     const handleFieldClick = async (fieldName) => {
         let field = fieldName.toLowerCase();
         if (availableId.length > 0) {
-            console.log(availableId)
             const id = availableId.shift();
             const newInputs = [...inputs, { id: id, value: field }, { id: id + 1, value: "" }];
             setInputs(newInputs);
             setavailableId(availableId);
-            console.log(availableId)
 
         } else {
             toast.error("Cannot add any more fields.");
         }
     };
     const deleteField = (id) => {
-        console.log(availableId)
         const newInputs = inputs.filter((input) => input.id !== id && input.id !== id - 1);
         const deletedId = id - 1;
 
         if (!availableId.includes(deletedId)) {
             setavailableId([...availableId, deletedId]);
         }
-
         setInputs(newInputs);
-        console.log(availableId)
-
     };
 
     const onSubmit = async (event, page) => {
@@ -90,10 +77,9 @@ export function FindJobs() {
     };
     const handleViewClick = (application) => {
         setSelectedJob(application)
-        // console.log(selectedJob)
         setOpenView(true);
         setDialogContent(
-            <Typography>
+            <>
                 <Typography>Company: {application.companyName}</Typography>
                 <Typography>Title: {application.title}</Typography>
                 <Typography>Employment Type: {application.employmentType}</Typography>
@@ -104,7 +90,7 @@ export function FindJobs() {
                 <Typography>Location: {application.location}</Typography>
                 <Typography>Job Description: {application.jobDesc}</Typography>
                 <Typography>Deadline: {application.deadline.split("T")[0]}</Typography>
-            </Typography>
+            </>
         )
     };
     const handleApplyClick = (application) => {
@@ -132,7 +118,7 @@ export function FindJobs() {
             setOpenApply(false);
             setOpenView(false);
             toast.error('Failed: ' + error.response.data.message + '.');
-            console.log(error.response.request.status);
+            console.log(error);
         }
     };
     const handleCloseView = () => {
@@ -238,7 +224,6 @@ export function FindJobs() {
                                         <Button
                                             variant="contained"
                                             size='small'
-                                            // onClick={handleApplyClick}
                                             onClick={() => handleApplyClick(result)}
                                             color="accent">
                                             Apply
@@ -271,7 +256,6 @@ export function FindJobs() {
                             <Button
                                 variant="contained"
                                 size='small'
-                                // onClick={handleApplyClick}
                                 onClick={() => handleApplyClick(selectedJob)}
                                 color="accent">
                                 Apply
