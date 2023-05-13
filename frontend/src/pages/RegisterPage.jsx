@@ -1,47 +1,12 @@
 import * as React from 'react';
-import Typography from '@mui/material/Typography';
 import { theme } from '../constants/theme'
-import { ThemeProvider } from '@mui/material';
+import { ThemeProvider, Box, Typography, Container, Button, Card, CardActions, CardContent, CardHeader, Grid } from '@mui/material';
 import { tiers } from '../constants/texts'
-import { Box } from '@mui/system';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
-import Grid from '@mui/material/Grid';
 import { useNavigate } from 'react-router-dom';
-
-// const footers = [
-//   {
-//     title: 'Company',
-//     description: ['Team', 'History', 'Contact us', 'Locations'],
-//   },
-//   {
-//     title: 'Features',
-//     description: [
-//       'Cool stuff',
-//       'Random feature',
-//       'Team feature',
-//       'Developer stuff',
-//       'Another one',
-//     ],
-//   },
-//   {
-//     title: 'Resources',
-//     description: ['Resource', 'Resource name', 'Another resource', 'Final resource'],
-//   },
-//   {
-//     title: 'Legal',
-//     description: ['Privacy policy', 'Terms of use'],
-//   },
-// ];
 
 export default function RegisterPage() {
   const navigate = useNavigate()
   return (
-
     <ThemeProvider theme={theme}>
       <Container sx={{ p: 5 }} >
         <Typography

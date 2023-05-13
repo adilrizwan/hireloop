@@ -55,7 +55,7 @@ function GuestUser() {
                 variant="contained"
                 onClick={handleRegisterClick}
                 size='small'
-                color="secondary">
+                color="primary">
                 Register
               </Button>
             </Box>

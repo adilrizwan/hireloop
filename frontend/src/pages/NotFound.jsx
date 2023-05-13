@@ -1,12 +1,6 @@
 import React from 'react'
 import { theme } from '../constants/theme'
-import { ThemeProvider } from '@emotion/react'
-import { Typography } from '@mui/material'
-import { Container } from '@mui/system'
-import { Grid } from '@mui/material'
-// import nikal from '../images/nikal.jpg'
-// import area from '../images/area.png'
-// import nasa from '../images/nasa.png'
+import { ThemeProvider, Grid, Button, Container, Typography } from '@mui/material'
 import waldo from '../images/waldo.png'
 
 function NotFound() {
@@ -29,6 +23,7 @@ function NotFound() {
   } else {
     imageSrc = "You shouldn't have come this far to find me... now face the consequences!";
   }
+  const user = localStorage.getItem('userRole')
   return (
     <ThemeProvider theme={theme}>
       <Container sx={{ p: 5 }}>
@@ -47,6 +42,15 @@ function NotFound() {
         <Typography variant="h6" align="center" color="text.primary" sx={{ mt: 1 }}>
           {`"${imageSrc}"`}
         </Typography>
+        <Grid sx={{mt:2}} align='center'>
+          <Button
+            variant='contained'
+            color='secondary'
+            onClick={() => {
+              !user ? window.location.assign('/login') : window.location.assign(`/${user.toLowerCase()}/dashboard`)
+            }}
+          >Take me back</Button>
+        </Grid>
       </Container>
     </ThemeProvider>
   )

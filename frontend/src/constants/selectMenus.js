@@ -6,3 +6,5 @@ export const years = Array.from(
   (_, i) => new Date().getFullYear() - i
 );
 export const fieldNames = ["title", "salary", "experience", "location", "jobDesc", "currency", "employmentType", "qualifications"];
+export const appFieldNames = ["firstName", "lastName", "email", "phoneNo"];
+export const empFieldNames = ["companyName", "email", "phoneNo", "website"];

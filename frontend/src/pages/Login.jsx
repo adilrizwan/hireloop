@@ -1,25 +1,13 @@
 import * as React from 'react';
-import { useState } from "react";
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
 import login from "../images/login.jpg";
 import { theme } from '../constants/theme';
-import { ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider, Avatar, Button, TextField, FormControlLabel, Checkbox, Paper, Box, Grid, Typography, Radio, RadioGroup } from '@mui/material';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
 export default function SignInSide() {
-  const [details, setDetails] = useState({
+  const [details, setDetails] = React.useState({
     email: "",
     password: "",
     role: ""
@@ -38,8 +26,8 @@ export default function SignInSide() {
     axios.post('login', details)
       .then((response) => {
         localStorage.setItem('token', response.data.token);
-        details.role.toUpperCase() === 'APPLICANT' ? localStorage.setItem('userName', response.data.Details.firstName) 
-        : localStorage.setItem('userName', response.data.Details.companyName);
+        details.role.toUpperCase() === 'APPLICANT' ? localStorage.setItem('userName', response.data.Details.firstName)
+          : localStorage.setItem('userName', response.data.Details.companyName);
         localStorage.setItem('userRole', details.role.toUpperCase())
         window.location.assign(`/${role.toLowerCase()}/dashboard`)
 

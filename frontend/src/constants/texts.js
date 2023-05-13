@@ -2,7 +2,7 @@ export const tiers = [
   {
     title: "Employer",
     description: [
-      "Hireloop connects employers with top talent globally, simplifying the hiring process with a user-friendly interface and powerful tools. Find your next superstar employee today.",
+      "Hireloop offers employers a simple way to find their perfect candidate job with our advanced search algorithms and user-friendly platform. Connect with applicants worldwide and boost your business by registering with Hireloop today.",
     ],
     buttonText: "Register Now",
     buttonVariant: "contained",
@@ -20,7 +20,7 @@ export const tiers = [
   {
     title: "Hireloop Admin",
     description: [
-      "Hireloop admin interface offers powerful tools for managing job postings, applicants, and employer accounts, exclusively for current employees. Only current Hireloop employees can utilize this user-friendly panel.",
+      "Hireloop admin facilitates seamless connectivity between employers and applicants, providing assistance when needed, powered by our robust engine. Discover career opportunities with Hireloop today.",
     ],
     buttonText: "Register Now",
     buttonVariant: "contained",

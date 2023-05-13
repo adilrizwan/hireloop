@@ -1,13 +1,11 @@
 import React from 'react'
 import { theme, bgImg } from '../constants/theme'
-import { ThemeProvider } from '@emotion/react'
-import { Typography } from '@mui/material'
-import { Container } from '@mui/system'
-import { Grid } from '@mui/material'
-import { Button } from '@mui/material'
+import { ThemeProvider, Typography, Container, Grid, Button } from '@mui/material'
 import home from '../images/hands2.jpg'
 
-function Homepage() {
+export default function Homepage() {
+  const user = localStorage.getItem('userRole');
+
   return (
     <ThemeProvider theme={theme}>
       <Grid style={bgImg(home).background}>
@@ -27,8 +25,9 @@ function Homepage() {
         <Grid align='center'>
           <Button
             variant='contained'
+            color='secondary'
             onClick={() => {
-              window.location.assign('/login')
+              !user ? window.location.assign('/login') : window.location.assign(`/${user.toLowerCase()}/dashboard`)
             }}
           >Get Started</Button>
         </Grid>
@@ -36,5 +35,3 @@ function Homepage() {
     </ThemeProvider>
   )
 }
-
-export default Homepage

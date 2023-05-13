@@ -44,7 +44,7 @@ function LoggedUser() {
         setAnchorElUser(null);
     };
     const handleProfile = () => {
-        navigate(`/${role.toLowerCase()}/dashboard`)
+        window.location.assign(`/${role.toLowerCase()}/dashboard`)
         setAnchorElUser(null);
     };
     return (
