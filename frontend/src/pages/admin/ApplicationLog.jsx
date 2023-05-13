@@ -52,7 +52,6 @@ export function ApplicationLog() {
     const handleChange = (event) => {
         setAppID(event.target.value);
     };
-
     return (
         <ThemeProvider theme={theme}>
             <Grid item xs={12}>

@@ -31,11 +31,13 @@ export default function RegisterAdmin() {
         event.preventDefault();
         if (!terms) {
             toast.error("Please accept the terms and conditions");
-        }
-        else if (details.password !== details.password2) {
-            toast.error("Passwords do not match.")
-        }
-        else {
+        } else if (!email.endsWith('@hireloop.com')) {
+            toast.error("Use official hireloop email.");
+        } else if (password.length < 8) {
+            toast.error("Password should be at least 8 characters long.");
+        } else if (password !== password2) {
+            toast.error("Passwords do not match.");
+        } else {
             axios.post('/register/admin', details)
                 .then(() => {
                     toast.success("Registration Successful. Redirecting to login page.");
