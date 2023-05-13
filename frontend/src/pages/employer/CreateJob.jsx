@@ -1,22 +1,19 @@
-import { Grid, Paper, Button, ThemeProvider, Typography, TextField } from '@mui/material'
+import { Grid, FormControlLabel, Paper, Checkbox, Button, ThemeProvider, Typography, TextField } from '@mui/material'
 import React from 'react'
-import { useState } from "react";
 import { theme, paperStyle, margins, buttonPlacement, selectMenus } from '../../constants/theme'
 import { toast } from 'react-toastify'
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox'
-import axios from 'axios';
+import axios from 'axios'
 
-function CreateJob() {
-    const [terms, setTerms] = useState(false)
-    const [details, setDetails] = useState({
+export default function CreateJob() {
+    const [terms, setTerms] = React.useState(false)
+    const [details, setDetails] = React.useState({
         title: "",
         location: "",
         employmentType: "",
         qualifications: "",
-        experience: null,
+        experience: "",
         currency: "",
-        salary: null,
+        salary: "",
         deadline: "",
         jobDesc: ""
     })
@@ -36,8 +33,11 @@ function CreateJob() {
         if (!terms) {
             toast.error("Please accept the terms and conditions");
         }
-        else if (details.title.length === 0 || details.deadline.length === 0) {
-            toast.error("Please enter all required fields.")
+        else if (details.title.length === 0 || details.employmentType.length === 0 || details.deadline.length === 0 || details.currency.length > 5) {
+            toast.error("Please enter all required fields.");
+        }
+        else if (isNaN(details.salary) || isNaN(details.experience)) {
+            toast.error("Please enter a valid number for salary and experience.");
         }
         else {
             axios.post('/employer/jobs/create', details, {
@@ -49,12 +49,12 @@ function CreateJob() {
                     toast.success("Successful!");
                 })
                 .catch((error) => {
-                    console.log(details.deadline)
-                    toast.error("Failed: " + error.response.data.message + ".")
-                    // console.log(error)
-                })
+                    toast.error("Failed: " + error.response.data.message + ".");
+                    console.log(error);
+                });
         }
     };
+
     return (
         <ThemeProvider theme={theme}>
             <Paper sx={{ mt: 3, mb: 3 }}>
@@ -77,22 +77,49 @@ function CreateJob() {
                             />
                             <TextField
                                 style={margins}
-                                name="location"
-                                value={location}
+                                required
+                                name="employmentType"
+                                value={employmentType}
                                 onChange={handleChange}
-                                label="Location"
-                                placeholder="New Jersey, USA"
+                                helperText="(Required)"
+
+                                label="Employment Type"
+                                placeholder="eg. Full-Time"
+                                variant="standard"
+                            />
+                        </Grid>
+                        <Grid align="left">
+                            <TextField
+                                style={margins}
+                                value={currency}
+                                name='currency'
+                                required
+                                helperText="(Required)"
+                                onChange={handleChange}
+                                label="Currency"
+                                placeholder="eg. USD"
+                                variant="standard"
+                            />
+                            <TextField
+                                style={margins}
+                                required
+                                name="salary"
+                                label="Salary"
+                                value={salary}
+                                helperText="(Required)"
+                                onChange={handleChange}
+                                placeholder="eg. 50000"
                                 variant="standard"
                             />
                         </Grid>
                         <Grid item>
                             <TextField
                                 style={margins}
-                                name="employmentType"
-                                value={employmentType}
+                                name="location"
+                                value={location}
                                 onChange={handleChange}
-                                label="Employment Type"
-                                placeholder="eg. Full-Time"
+                                label="Location"
+                                placeholder="New Jersey, USA"
                                 variant="standard"
                             />
                             <TextField
@@ -113,26 +140,6 @@ function CreateJob() {
                                 onChange={handleChange}
                                 label="Experience (years)"
                                 placeholder="eg. 2"
-                                variant="standard"
-                            />
-                        </Grid>
-                        <Grid align="left">
-                            <TextField
-                                style={margins}
-                                value={currency}
-                                name='currency'
-                                onChange={handleChange}
-                                label="Currency"
-                                placeholder="eg. USD"
-                                variant="standard"
-                            />
-                            <TextField
-                                style={margins}
-                                name="salary"
-                                label="Salary"
-                                value={salary}
-                                onChange={handleChange}
-                                placeholder="eg. 50000"
                                 variant="standard"
                             />
                         </Grid>
@@ -191,5 +198,3 @@ function CreateJob() {
         </ThemeProvider>
     )
 }
-export default CreateJob
-

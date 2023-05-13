@@ -1,14 +1,9 @@
 import * as React from 'react';
-import { ThemeProvider } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import { Button, ListItem, ListItemText, Pagination, Typography } from '@mui/material';
+import { ThemeProvider, Box, List, Dialog, DialogTitle, DialogContent, DialogActions, Grid, Paper, Button, ListItem, ListItemText, Pagination, Typography } from '@mui/material';
 import axios from 'axios';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { toast } from 'react-toastify'
 import { theme, pageSize } from '../../constants/theme'
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 
 export function JobsPosted() {
     const [data, setData] = React.useState([]);
@@ -44,7 +39,7 @@ export function JobsPosted() {
         setSelectedJob(application)
         setOpenView(true);
         setDialogContent(
-            <Typography>
+            <>
                 <Typography>Title: {application.title}</Typography>
                 <Typography>Employment Type: {application.employmentType}</Typography>
                 <Typography>Experience (years): {application.experience}</Typography>
@@ -55,7 +50,7 @@ export function JobsPosted() {
                 <Typography>Job Description: {application.jobDesc}</Typography>
                 <Typography>Date Created: {application.dateCreated.split("T")[0]}</Typography>
                 <Typography>Deadline: {application.deadline.split("T")[0]}</Typography>
-            </Typography>
+            </>
 
         )
     };
@@ -64,9 +59,7 @@ export function JobsPosted() {
         setOpenDelete(true);
         setDeleteDialogContent(
             <Typography>
-                <div>
-                    Are you sure you want to delete this opening?
-                </div>
+                Are you sure you want to delete this opening?
             </Typography>
         )
     };
@@ -86,7 +79,7 @@ export function JobsPosted() {
             setOpenDelete(false);
             setOpenView(false);
             toast.error('Failed: ' + error.response.data.message + '.');
-            console.log(error.response.request.status);
+            console.log(error);
         }
     };
 
@@ -131,9 +124,11 @@ export function JobsPosted() {
                                         </Button>
                                         <Button
                                             variant="contained"
-                                            size='small'
+                                            size="small"
                                             onClick={() => handleDeleteClick(job)}
-                                            color="error">
+                                            color="error"
+                                            endIcon={<DeleteIcon />}
+                                        >
                                             Delete
                                         </Button>
                                     </Box>
@@ -165,7 +160,9 @@ export function JobsPosted() {
                                 variant="contained"
                                 size='small'
                                 onClick={() => handleDeleteClick(selectedJob)}
-                                color="error">
+                                endIcon={<DeleteIcon />}
+                                color="error"
+                            >
                                 Delete
                             </Button>
                             <Button

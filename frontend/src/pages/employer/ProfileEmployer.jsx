@@ -1,22 +1,19 @@
 import * as React from 'react';
 import axios from 'axios';
-import { Grid, Paper, Button, Input, ThemeProvider, Typography, TextField, MenuItem, InputLabel, Box, FormControl } from '@mui/material'
-import { useState } from "react";
+import { useEffect } from 'react';
+import { Grid, Select, Paper, Button, Input, ThemeProvider, Typography, TextField, MenuItem, InputLabel, Box, FormControl, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material'
 import { theme, paperStyle, margins, buttonPlacement, selectMenus } from '../../constants/theme'
 import { countries } from "../../constants/countries"
 import { TextMaskCustom } from "../../constants/phoneNumber"
 import { companyTypeArr, years } from "../../constants/selectMenus"
-import { Select } from '@mui/material';
 import { toast } from 'react-toastify'
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import { useEffect } from 'react';
 
 export default function ProfileEmployer() {
     const token = localStorage.getItem('token');
     const [openConfirm, setOpenConfirm] = React.useState(false);
     const [dialogContent, setDialogContent] = React.useState(null);
 
-    const [data, setData] = useState({
+    const [data, setData] = React.useState({
         companyName: "",
         estdYear: "",
         noOfEmployees: "",
@@ -51,8 +48,11 @@ export default function ProfileEmployer() {
     };
     const onSubmit = async (event) => {
         event.preventDefault();
-        console.log(data)
         setOpenConfirm(false);
+        if (isNaN(data.noOfEmployees)) {
+            toast.error("Please enter valid numbers for Number of Employees.");
+            return;
+        }
         try {
             await axios.put('/employer/profile', data, {
                 headers: {
@@ -63,16 +63,16 @@ export default function ProfileEmployer() {
             toast.warn('Some changes might take effect after you login next time.');
         } catch (error) {
             toast.error('Update failed: ' + error.response.data.message + '.');
-            console.log(error.response.request.status);
+            console.log(error);
         }
     };
+
     const handleViewConfirm = () => {
         setOpenConfirm(true);
         setDialogContent(
             <Typography>
-                Are you sure you want to delete this opening?
+                Are you sure you want to update your profile?
             </Typography>
-
         )
     };
     const handleCloseConfirm = () => {
@@ -233,7 +233,6 @@ export default function ProfileEmployer() {
                                 style={buttonPlacement}
                                 variant="contained"
                                 size='large'
-                                // onClick={onSubmit}
                                 onClick={handleViewConfirm}
                                 color="primary">
                                 Update

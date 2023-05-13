@@ -1,6 +1,5 @@
-import { Grid, Avatar, Paper, Button, Input, ThemeProvider, Typography, TextField, MenuItem, InputLabel, Box, FormControl } from '@mui/material'
+import { Grid, Checkbox, Select, FormControlLabel, Avatar, Paper, Button, Input, ThemeProvider, Typography, TextField, MenuItem, InputLabel, Box, FormControl } from '@mui/material'
 import React from 'react'
-import { useState } from "react";
 import { theme, bgImg, paperStyle, margins, buttonPlacement, selectMenus } from '../../constants/theme'
 import { countries } from "../../constants/countries"
 import { TextMaskCustom } from "../../constants/phoneNumber"
@@ -8,15 +7,13 @@ import { companyTypeArr, years } from "../../constants/selectMenus"
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom';
 import office from "../../images/office2.jpg"
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox'
-import { Select } from '@mui/material';
+import WorkIcon from '@mui/icons-material/Work';
 import axios from 'axios';
 
-function RegisterEmployer() {
-    const [terms, setTerms] = useState(false)
-    const [details, setDetails] = useState({
-        role:"Employer",
+export default function RegisterEmployer() {
+    const [terms, setTerms] = React.useState(false)
+    const [details, setDetails] = React.useState({
+        role: "Employer",
         companyName: "",
         estdYear: "",
         email: "",
@@ -44,13 +41,18 @@ function RegisterEmployer() {
 
     const onSubmit = (event) => {
         event.preventDefault();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!terms) {
             toast.error("Please accept the terms and conditions");
-        }
-        else if (details.password !== details.password2) {
-            toast.error("Passwords do not match.")
-        }
-        else {
+        } else if (password.length < 8) {
+            toast.error("Password should be at least 8 characters long.");
+        } else if (password !== password2) {
+            toast.error("Passwords do not match.");
+        } else if (!emailRegex.test(email)) {
+            toast.error("Invalid email format");
+        } else if (isNaN(parseInt(noOfEmployees))) {
+            toast.error("Number of Employees should be a number.");
+        } else {
             axios.post('/register/employer', details)
                 .then(() => {
                     toast.success("Registration Successful. Redirecting to login page.");
@@ -74,7 +76,9 @@ function RegisterEmployer() {
             <Grid style={bgImg(office).background}>
                 <Paper elevation={20} style={paperStyle}>
                     <Grid align="center">
-                        <Avatar style={{ backgroundColor: theme.palette.secondary.main }} />
+                        <Avatar style={{ backgroundColor: theme.palette.primary.main }}>
+                            <WorkIcon></WorkIcon>
+                        </Avatar>
                         <Typography variant="h2">Register as an Employer</Typography>
                     </Grid>
                     <form onSubmit={onSubmit}>
@@ -82,10 +86,10 @@ function RegisterEmployer() {
                             <TextField
                                 style={margins}
                                 name="companyName"
-                                required
                                 value={companyName}
                                 onChange={handleChange}
                                 label="Company Name"
+                                required
                                 helperText="(Required)"
                                 placeholder="eg. Hireloop"
                                 variant="standard"
@@ -165,6 +169,8 @@ function RegisterEmployer() {
                                 style={margins}
                                 name="noOfEmployees"
                                 value={noOfEmployees}
+                                required
+                                helperText="(Required)"
                                 onChange={handleChange}
                                 label="Number of Employees"
                                 placeholder="eg. 5000"
@@ -173,6 +179,8 @@ function RegisterEmployer() {
                             <TextField
                                 style={margins}
                                 name="prodDomain"
+                                required
+                                helperText="(Required)"
                                 label="Product Domain"
                                 value={prodDomain}
                                 onChange={handleChange}
@@ -207,6 +215,8 @@ function RegisterEmployer() {
                                 style={margins}
                                 value={city}
                                 name='city'
+                                required
+                                helperText="(Required)"
                                 onChange={handleChange}
                                 label="City"
                                 placeholder="eg. New York"
@@ -291,5 +301,3 @@ function RegisterEmployer() {
         </ThemeProvider>
     )
 }
-export default RegisterEmployer
-

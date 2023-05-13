@@ -1,13 +1,7 @@
 import * as React from 'react';
-import { ThemeProvider } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import { Button, ListItem, ListItemText, Pagination, Typography } from '@mui/material';
+import { ThemeProvider, Box, Grid, Paper, List, Button, ListItem, ListItemText, Pagination, Typography, Dialog, DialogTitle, DialogContent, DialogActions} from '@mui/material';
 import axios from 'axios';
 import { theme, pageSize } from '../../constants/theme'
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { toast } from 'react-toastify';
 
 export default function Shortlist() {
@@ -58,9 +52,8 @@ export default function Shortlist() {
   const handleViewClick = (application) => {
     setOpenView(true);
     setSelectedApplicant(application.id);
-    console.log(selectedApplicant)
     setDialogContent(
-      <Typography>
+      <>
         <Typography>First Name: {application.firstName}</Typography>
         <Typography>Last Name: {application.lastName}</Typography>
         <Typography>Date of Birth: {application.DOB.split("T")[0]}</Typography>
@@ -74,7 +67,7 @@ export default function Shortlist() {
         <Typography>Country: {application.country}</Typography>
         <Typography>Bio: {application.bio}</Typography>
         <Typography>Status: {application.status}</Typography>
-      </Typography>
+      </>
     )
   };
   const handleStatusClick = (message) => {
@@ -93,7 +86,7 @@ export default function Shortlist() {
       })
       .catch((error) => {
         toast.error('Failed: ' + error.response.data.message + '.');
-        console.log(error.response.request.status);
+        console.log(error);
       });
   };
   const handleCloseView = () => {
