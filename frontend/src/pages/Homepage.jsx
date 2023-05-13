@@ -2,10 +2,11 @@ import React from 'react'
 import { theme, bgImg } from '../constants/theme'
 import { ThemeProvider, Typography, Container, Grid, Button } from '@mui/material'
 import home from '../images/hands2.jpg'
+import { useNavigate } from 'react-router-dom';
 
 export default function Homepage() {
   const user = localStorage.getItem('userRole');
-
+  const navigate = useNavigate()
   return (
     <ThemeProvider theme={theme}>
       <Grid style={bgImg(home).background}>
@@ -27,7 +28,7 @@ export default function Homepage() {
             variant='contained'
             color='secondary'
             onClick={() => {
-              !user ? window.location.assign('/login') : window.location.assign(`/${user.toLowerCase()}/dashboard`)
+              !user ? navigate('/login') : navigate(`/${user.toLowerCase()}/dashboard`)
             }}
           >Get Started</Button>
         </Grid>

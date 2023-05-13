@@ -18,7 +18,7 @@ import DashboardApplicant from "./pages/applicant/DashboardApplicant";
 import DashboardAdmin from "./pages/admin/DashboardAdmin";
 import DashboardEmployer from "./pages/employer/DashboardEmployer";
 
-function App() {
+export default function App() {
   const [user] = useState(localStorage.getItem("userRole"));
   return (
     <>
@@ -69,7 +69,6 @@ function App() {
           ) : (
             <NotFound></NotFound>
           )}
-
           <Footer></Footer>
         </div>
       </Router>
@@ -77,5 +76,3 @@ function App() {
     </>
   );
 }
-
-export default App;
