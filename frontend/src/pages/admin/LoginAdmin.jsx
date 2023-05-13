@@ -1,24 +1,14 @@
 import * as React from 'react';
-import { useState } from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import secure from "../../images/secure.jpg";
 import { theme } from '../../constants/theme';
-import { ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider, Avatar, Button, FormControlLabel, Checkbox, Paper, TextField, Box, Grid, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import secure from "../../images/secure.jpg";
 import { toast } from 'react-toastify'
 
 export default function LoginAdmin() {
-  const [details, setDetails] = useState({
+  const [details, setDetails] = React.useState({
     email: "",
     password: "",
     role: "ADMIN"
@@ -30,14 +20,13 @@ export default function LoginAdmin() {
     setDetails((prevState) => ({ ...prevState, [name]: value }));
   };
   const onSubmit = (event) => {
-    console.log(details)
     event.preventDefault();
     axios.post('/admin/login', details)
       .then((response) => {
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('userName', response.data.Details.firstName);
         localStorage.setItem('userRole', details.role);
-        navigate("/")
+        window.location.assign(`/admin/dashboard`)
       })
       .catch((error) => {
         if (error.response.request.status === 401) {

@@ -97,7 +97,7 @@ exports.applicantDashboard = async (req, res) => {
       );
       if (apply.Applications.length === 0) {
         res.json({
-          "Applicant Name": apply["Applicant Name"],
+          ApplicantName: apply["ApplicantName"],
           message: "No activity to show",
         });
       } else {

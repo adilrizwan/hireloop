@@ -1,17 +1,14 @@
-import { Grid, Avatar, Paper, Button, ThemeProvider, Typography, TextField } from '@mui/material'
+import { Grid, Avatar, Paper, Button, ThemeProvider, Typography, TextField, Checkbox, FormControlLabel } from '@mui/material'
 import React from 'react'
-import { useState } from "react";
 import { toast } from 'react-toastify'
 import { theme, bgImg, paperStyle, margins, buttonPlacement } from '../../constants/theme'
 import admin from "../../images/admin.jpg"
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-function RegisterAdmin() {
-    const [terms, setTerms] = useState(false)
-    const [details, setDetails] = useState({
+export default function RegisterAdmin() {
+    const [terms, setTerms] = React.useState(false)
+    const [details, setDetails] = React.useState({
         role: "Admin",
         firstName: "",
         lastName: "",
@@ -158,5 +155,3 @@ function RegisterAdmin() {
         </ThemeProvider>
     )
 }
-export default RegisterAdmin
-

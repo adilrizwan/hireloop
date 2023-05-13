@@ -86,7 +86,7 @@ exports.applicantDashboard = async (id, offset, pageSize) => {
       .query(`exec getApplicantDashboard @id, @offset, @pageSize`);
     const fetched = await paginate.resultCount(offset,query.recordsets[2].length,query.recordsets[1][0].TOTAL)
     const response = {
-      "Applicant Name": query.recordsets[0][0].applicantName,
+      ApplicantName: query.recordsets[0][0].applicantName,
       Results:
         "Showing " +
         fetched +
