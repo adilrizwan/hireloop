@@ -22,13 +22,13 @@ export default function RegisterEmployer() {
         noOfEmployees: "",
         prodDomain: "",
         type: "",
-        website: "",
+        web: "",
         phoneNo: "",
         city: "",
         country: "",
         about: "",
     })
-    const { companyName, estdYear, email, password, password2, noOfEmployees, prodDomain, type, website, phoneNo, city, country, about } = details
+    const { companyName, estdYear, email, password, password2, noOfEmployees, prodDomain, type, web, phoneNo, city, country, about } = details
     const navigate = useNavigate()
     const handleTerms = (event) => {
         setTerms(event.target.checked);
@@ -191,8 +191,8 @@ export default function RegisterEmployer() {
                         <Grid align="left">
                             <TextField
                                 style={margins}
-                                name='website'
-                                value={website}
+                                name='web'
+                                value={web}
                                 onChange={handleChange}
                                 label="Website"
                                 placeholder="eg. www.hireloop.com"
