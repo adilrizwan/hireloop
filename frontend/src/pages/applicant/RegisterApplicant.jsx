@@ -3,7 +3,8 @@ import React from 'react'
 import { toast } from 'react-toastify'
 import { theme, bgImg, paperStyle, margins, buttonPlacement, selectMenus } from '../../constants/theme'
 import { countries } from "../../constants/countries"
-import { TextMaskCustom } from "../../constants/phoneNumber"
+import { TextMaskCustomReg } from "../../constants/phoneNumber"
+
 import { genderArr } from "../../constants/selectMenus"
 import station from "../../images/station.jpg"
 import axios from 'axios'
@@ -206,7 +207,7 @@ export default function RegisterApplicant() {
                                     placeholder="eg. (3xx) xxx-xxxx"
                                     name="phoneNo"
                                     id="formatted-text-mask-input"
-                                    inputComponent={TextMaskCustom}
+                                    inputComponent={TextMaskCustomReg}
                                 />
                             </FormControl>
                         </Grid>

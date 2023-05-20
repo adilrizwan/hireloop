@@ -2,7 +2,7 @@ import { Grid, Checkbox, Select, FormControlLabel, Avatar, Paper, Button, Input,
 import React from 'react'
 import { theme, bgImg, paperStyle, margins, buttonPlacement, selectMenus } from '../../constants/theme'
 import { countries } from "../../constants/countries"
-import { TextMaskCustom } from "../../constants/phoneNumber"
+import { TextMaskCustomReg } from "../../constants/phoneNumber"
 import { companyTypeArr, years } from "../../constants/selectMenus"
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom';
@@ -206,7 +206,7 @@ export default function RegisterEmployer() {
                                     placeholder="eg. (3xx) xxx-xxxx"
                                     name="phoneNo"
                                     id="formatted-text-mask-input"
-                                    inputComponent={TextMaskCustom}
+                                    inputComponent={TextMaskCustomReg}
                                 />
                             </FormControl>
                         </Grid>
